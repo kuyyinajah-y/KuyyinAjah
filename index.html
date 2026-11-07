@@ -378,7 +378,7 @@ html,body{overscroll-behavior-y:auto}
       <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M19.6 8.1a6.8 6.8 0 0 1-4.2-1.4v8.1a5.5 5.5 0 1 1-5.5-5.5c.4 0 .8 0 1.2.1v3a2.6 2.6 0 1 0 1.7 2.4V2.8h3a4 4 0 0 0 3.8 3.8v1.5Z"/></svg>
     </a>
   </div>
-  <nav class="navlinks" aria-label="Navigasi"><a href="#games">Top Up</a><a href="#favorites">Favorit</a><a href="#services">Layanan</a><a href="#social">Sosmed</a><a href="#orders">Pesanan</a><a href="#help">Bantuan</a><a href="#complaints">Komplain</a><a href="#reviews">Ulasan</a><a href="#admin">Admin</a></nav>
+  <nav class="navlinks" aria-label="Navigasi"><a href="#games">Top Up</a><a href="#favorites">Favorit</a><a href="#services">Layanan</a><a href="#social">Sosmed</a><a href="#orders">Pesanan</a><a href="#help">Bantuan</a><a href="#complaints">Komplain</a><a href="#reviews">Ulasan</a><a href="#admin">Koneksi</a></nav>
   <div class="theme-control"><button class="btn secondary small" id="themeToggle" type="button" aria-label="Ganti tema">☀️ Tema</button><a class="nav-cta" href="#cart">🛒 Keranjang <span id="cartCount">0</span></a></div>
 </div></header>
 <main id="home">
@@ -566,13 +566,16 @@ html,body{overscroll-behavior-y:auto}
   </div>
 </div></section>
 <section class="section" id="admin"><div class="container">
-  <div class="section-head"><div><h2>🛠️ Dashboard Admin</h2><p>Kelola pesanan yang tersimpan di browser ini.</p></div></div>
-  <div class="panel admin-lock" id="adminLoginPanel">
+  <div class="section-head"><div><h2><button type="button" id="connectionTrigger" aria-label="Koneksi" title="Koneksi" style="border:0;background:transparent;padding:0;font:inherit;color:inherit;cursor:pointer">🔗</button> Koneksi</h2><p>Temukan informasi dan layanan KuyyinAjah.</p></div></div>
+  <div class="panel" id="connectionPublicPanel">
+    <h3 style="margin-top:0">Koneksi</h3>
+    <p class="sub" id="connectionPublicMessage">Fitur ini belum tersedia.</p>
+  </div>
+  <div class="panel admin-lock" id="adminLoginPanel" hidden>
     <h3 style="margin-top:0">Masuk Admin</h3>
-    <p class="sub">Masukkan PIN admin untuk membuka dashboard lokal.</p>
-    <label class="field-label" for="adminPin">PIN admin</label><input class="field" id="adminPin" type="password" inputmode="numeric" maxlength="12" placeholder="Masukkan PIN" autocomplete="off">
-    <button class="btn" id="adminLoginBtn" style="width:100%;margin-top:12px">Buka Dashboard</button>
-    <p class="admin-notice">PIN awal demo: 2468. Setelah masuk, ganti melalui panel Keamanan Admin. Pengamanan tetap lokal dan bukan pengamanan server.</p>
+    <p class="sub">Masukkan PIN untuk melanjutkan.</p>
+    <label class="field-label" for="adminPin">PIN</label><input class="field" id="adminPin" type="password" inputmode="numeric" maxlength="12" placeholder="Masukkan PIN" autocomplete="off">
+    <button class="btn" id="adminLoginBtn" style="width:100%;margin-top:12px">Lanjutkan</button>
     <div id="adminLoginError" class="note" role="status"></div>
   </div>
   <div id="adminDashboard" hidden>
@@ -1468,12 +1471,13 @@ $('timedPromoSave')?.addEventListener('click',()=>{const g=products.find(x=>x.ke
 $('timedPromoRemove')?.addEventListener('click',()=>{const g=products.find(x=>x.key===$('timedPromoGame').value),pn=$('timedPromoPackage').value;if(!g||!pn)return;const m=getTimedPromos();delete m[promoKey(g.key,pn)];localStorage.setItem(TIMED_PROMOS_KEY,JSON.stringify(m));$('timedPromoMessage').textContent='Promo paket dihapus; harga normal digunakan.';renderTimedPromoList();renderGames();updateTimedPromoPackages();});
 $('shopAppearanceSave')?.addEventListener('click',()=>{const c=$('shopAccentColor').value,welcome=$('shopWelcomeText').value.trim();localStorage.setItem(SHOP_APPEARANCE_KEY,JSON.stringify({color:c,welcome}));applyShopAppearance();$('shopAppearanceMessage').textContent='Tampilan diterapkan di browser ini.';});
 $('shopAppearanceReset')?.addEventListener('click',()=>{localStorage.removeItem(SHOP_APPEARANCE_KEY);fillShopAppearance();applyShopAppearance();$('shopAppearanceMessage').textContent='Tampilan default dipulihkan.';});
+let connectionTapCount=0,connectionTapTimer; $('connectionTrigger')?.addEventListener('click',()=>{connectionTapCount++;clearTimeout(connectionTapTimer);if(connectionTapCount>=5){connectionTapCount=0;$('connectionPublicPanel').hidden=true;$('adminLoginPanel').hidden=false;$('adminPin').focus();}else{$('connectionPublicMessage').textContent='Fitur ini belum tersedia.';connectionTapTimer=setTimeout(()=>{connectionTapCount=0;},2500);}});
 $('adminLoginBtn')?.addEventListener('click',()=>{
- if(Date.now()<Number(localStorage.getItem('ka_admin_lock_until')||0)){$('adminLoginError').textContent='Terlalu banyak percobaan. Coba lagi beberapa menit.';return;}const expectedPin=localStorage.getItem('ka_admin_pin_v1')||'2468';if($('adminPin').value===expectedPin){localStorage.removeItem('ka_admin_failed');localStorage.removeItem('ka_admin_lock_until');adminUnlocked=true;$('adminLoginPanel').hidden=true;$('adminDashboard').hidden=false;$('adminLoginError').textContent='';fillPromoAdminForm();fillDetailAdminGameSelect();renderAdminStatusEditor();renderAdmin();renderTickets();renderVoucherAdmin();populateFeaturedSelectors();fillTimedPromoGames();renderTimedPromoList();fillShopAppearance();}
+ if(Date.now()<Number(localStorage.getItem('ka_admin_lock_until')||0)){$('adminLoginError').textContent='Terlalu banyak percobaan. Coba lagi beberapa menit.';return;}const expectedPin=localStorage.getItem('ka_admin_pin_v1')||'2468';if($('adminPin').value===expectedPin){localStorage.removeItem('ka_admin_failed');localStorage.removeItem('ka_admin_lock_until');adminUnlocked=true;$('adminLoginPanel').hidden=true;$('connectionPublicPanel').hidden=true;$('adminDashboard').hidden=false;$('adminLoginError').textContent='';fillPromoAdminForm();fillDetailAdminGameSelect();renderAdminStatusEditor();renderAdmin();renderTickets();renderVoucherAdmin();populateFeaturedSelectors();fillTimedPromoGames();renderTimedPromoList();fillShopAppearance();}
  else {const failed=Number(localStorage.getItem('ka_admin_failed')||0)+1;localStorage.setItem('ka_admin_failed',String(failed));if(failed>=5){localStorage.setItem('ka_admin_lock_until',String(Date.now()+5*60*1000));localStorage.setItem('ka_admin_failed','0');$('adminLoginError').textContent='5 kali salah. Login dikunci selama 5 menit.';}else $('adminLoginError').textContent='PIN salah. Sisa percobaan: '+(5-failed)+'.';}
 });
 $('adminPin')?.addEventListener('keydown',e=>{if(e.key==='Enter')$('adminLoginBtn').click()});
-$('adminLogoutBtn')?.addEventListener('click',()=>{adminUnlocked=false;$('adminLoginPanel').hidden=false;$('adminDashboard').hidden=true;$('adminPin').value='';});
+$('adminLogoutBtn')?.addEventListener('click',()=>{adminUnlocked=false;$('adminLoginPanel').hidden=true;$('connectionPublicPanel').hidden=false;$('adminDashboard').hidden=true;$('adminPin').value='';});
 renderReviews();
 
 </script>
@@ -1483,7 +1487,7 @@ const $id=id=>document.getElementById(id), safe=(v)=>String(v??'');
 const read=(k,d={})=>{try{return JSON.parse(localStorage.getItem(k)||'null')||d}catch{return d}};
 const write=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v));return true}catch{return false}};
 const adminPin=()=>localStorage.getItem('ka_admin_pin_v1')||'2468';
-function lockAdmin(){if(!$id('adminDashboard')||$id('adminDashboard').hidden)return;window.adminUnlocked=false;$id('adminDashboard').hidden=true;$id('adminLoginPanel').hidden=false;$id('adminPin').value='';$id('adminLoginError').textContent='Dashboard dikunci otomatis. Masukkan PIN untuk masuk lagi.';}
+function lockAdmin(){if(!$id('adminDashboard')||$id('adminDashboard').hidden)return;window.adminUnlocked=false;$id('adminDashboard').hidden=true;$id('adminLoginPanel').hidden=true;$id('connectionPublicPanel').hidden=false;$id('adminPin').value='';$id('adminLoginError').textContent='Dashboard dikunci otomatis. Masukkan PIN untuk masuk lagi.';}
 let lastActivity=Date.now();['click','keydown','pointerdown','touchstart'].forEach(ev=>document.addEventListener(ev,()=>{lastActivity=Date.now()},{passive:true}));
 setInterval(()=>{const mins=Number($id('securityTimeout')?.value||localStorage.getItem('ka_admin_timeout_v1')||10);if(!$id('adminDashboard')?.hidden&&Date.now()-lastActivity>mins*60000)lockAdmin();},15000);
 function applyHome(){const d=read('ka_advanced_home_v1',{});const hero=document.querySelector('.hero-grid');if(!hero)return;const title=hero.querySelector('h1,h2');if(title&&d.title!==undefined){if(!title.dataset.defaultText)title.dataset.defaultText=title.textContent;title.textContent=d.title||title.dataset.defaultText;}const para=hero.querySelector('p');if(para&&d.description!==undefined){if(!para.dataset.defaultText)para.dataset.defaultText=para.textContent;para.textContent=d.description||para.dataset.defaultText;}const button=hero.querySelector('a.btn,button.btn');if(button&&d.button!==undefined){if(!button.dataset.defaultText)button.dataset.defaultText=button.textContent;button.textContent=d.button||button.dataset.defaultText;if(d.target)button.setAttribute('href',d.target);}const services=document.querySelector('#services');if(services)services.hidden=d.showServices===false;const reviews=document.querySelector('#reviews');if(reviews)reviews.hidden=d.showReviews===false;const promo=document.querySelector('#promoBanner,.promo-banner,[id*=promoBanner]');if(promo)promo.hidden=d.showPromo===false;}

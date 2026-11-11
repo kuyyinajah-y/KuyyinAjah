@@ -365,6 +365,19 @@ html,body{overscroll-behavior-y:auto}
 .hero-logo{display:block;width:min(100%,430px);height:auto;aspect-ratio:1/1;object-fit:contain;border-radius:20px}
 @media(max-width:700px){.brand-logo{width:36px;height:36px}.hero-art{min-height:0;padding:8px}.hero-logo{width:min(100%,340px)}}
 
+
+.game-icon-with-cover{position:relative;overflow:hidden;padding:0}
+.game-icon-with-cover img{display:block;width:100%;height:100%;object-fit:cover;border-radius:inherit}
+.game-icon-with-cover>span[hidden]{display:none}
+</style>
+<style>
+@keyframes promoPulse{0%,100%{transform:translateY(0);box-shadow:0 0 0 2px rgba(255,122,0,.16),0 5px 16px rgba(255,91,0,.30),inset 0 1px 0 rgba(255,255,255,.55)}50%{transform:translateY(-1px);box-shadow:0 0 0 4px rgba(255,196,0,.16),0 7px 23px rgba(255,91,0,.48),inset 0 1px 0 rgba(255,255,255,.65)}}
+
+.flash-package-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:7px;padding:10px;border:1px solid var(--line);border-radius:12px;background:var(--panel);max-height:230px;overflow:auto}
+.flash-package-option{display:flex;align-items:center;gap:8px;padding:9px;border:1px solid var(--line);border-radius:9px;background:#ffffff06;font-size:12px;cursor:pointer}
+.flash-package-option input{width:17px;height:17px;accent-color:#60a5fa;flex:0 0 auto}
+.flash-package-option span{min-width:0}
+.flash-package-option small{display:block;color:var(--muted);font-size:10px}
 </style>
 </head>
 <body>
@@ -382,6 +395,15 @@ html,body{overscroll-behavior-y:auto}
   <div class="theme-control"><button class="btn secondary small" id="themeToggle" type="button" aria-label="Ganti tema">☀️ Tema</button><a class="nav-cta" href="#cart">🛒 Keranjang <span id="cartCount">0</span></a></div>
 </div></header>
 <main id="home">
+<section id="activePromoSection" class="container" hidden style="padding:8px 0 4px">
+  <div style="position:relative">
+    <button id="activePromoToggle" type="button" aria-expanded="false" style="position:relative;isolation:isolate;overflow:hidden;display:inline-flex;align-items:center;gap:8px;border:1px solid rgba(255,224,130,.95);background:linear-gradient(105deg,#ff3d00 0%,#ff7a00 42%,#ffc400 100%);color:#241000;border-radius:14px;padding:9px 14px;font-size:.86rem;font-weight:950;letter-spacing:.2px;cursor:pointer;box-shadow:0 0 0 2px rgba(255,122,0,.18),0 5px 18px rgba(255,91,0,.38),inset 0 1px 0 rgba(255,255,255,.55);animation:promoPulse 1.8s ease-in-out infinite">
+      <span style="font-size:1.12rem;filter:drop-shadow(0 1px 1px rgba(0,0,0,.2))">🔥</span><span style="display:flex;flex-direction:column;align-items:flex-start;line-height:1.05"><span>DISKON SPESIAL!</span><small style="font-size:.62rem;font-weight:800;letter-spacing:.55px;margin-top:3px">KLIK & CEK PROMO</small></span><span id="activePromoCount" class="pill" style="font-size:.72rem;padding:4px 8px;background:#fff4d6;color:#9a3412;font-weight:950;border:1px solid rgba(154,52,18,.15)">0</span><span aria-hidden="true" style="font-size:.85rem">▾</span>
+    </button>
+    <div id="activePromoCards" hidden style="display:flex;flex-direction:column;gap:0;margin-top:8px;padding:4px 10px;border:1px solid var(--border);border-radius:12px;background:var(--card);max-height:190px;overflow-y:auto"></div>
+  </div>
+</section>
+
 <section class="hero"><div class="container hero-grid">
   <div><span class="eyebrow"><i></i> Gaming store • cepat & praktis</span>
     <h1>Push rank.<br><em>Top up gampang.</em></h1>
@@ -390,7 +412,7 @@ html,body{overscroll-behavior-y:auto}
       <span>Nggak Pake Ribet, Kuyyin Ajah!</span>
       <span>Top Up Aman, Mabar Nyaman!</span>
     </div>
-    <p>Top up game favorit dengan alur yang simpel: pilih game, tentukan paket, gunakan voucher jika ada, lalu konfirmasi pesanan ke admin KuyyinAjah melalui WhatsApp.</p>
+    <p>KuyyinAjah, satu tempat untuk berbagai kebutuhan digital! Mulai dari top up game, jual beli (JB), joki game, joki tugas, hingga layanan sosial media. Pilih layanan yang kamu butuhkan, cek detailnya, lalu konsultasikan pesanan dengan admin KuyyinAjah melalui WhatsApp. Praktis, lengkap, dan nggak pake ribet!</p>
     <div class="hero-actions"><a class="btn" href="#games">⚡ Mulai Top Up</a><a class="btn secondary" href="#services">Lihat Layanan</a></div>
     <div class="stats"><div class="stat"><strong>🎮 Banyak Pilihan</strong><span>Game & nominal top up</span></div><div class="stat"><strong>🎟️ Voucher</strong><span>Masukkan kode promo</span></div><div class="stat"><strong>📦 Lacak Pesanan</strong><span>Nomor pesanan otomatis</span></div></div>
   </div>
@@ -418,12 +440,9 @@ html,body{overscroll-behavior-y:auto}
   </div>
   <div class="game-picker" id="gamePicker"></div>
   <div id="selectedGameArea"></div>
-  <p class="note">Harga merupakan daftar yang tersimpan di halaman ini. Pastikan kembali harga dan ketersediaan ke admin sebelum membayar.</p>
+  
 </div></section>
-<section class="section favorite-section" id="favorites"><div class="container">
-  <div class="section-head"><div><h2>❤️ Favorit Saya</h2><p>Simpan paket game yang sering kamu incar supaya gampang ditemukan lagi.</p></div><span class="pill" id="favoriteCount">0 FAVORIT</span></div>
-  <div class="favorite-grid" id="favoriteList"><div class="empty" style="grid-column:1/-1">Belum ada favorit. Tekan ♡ pada paket game untuk menyimpannya.</div></div>
-</div></section>
+
 <section class="section" id="services"><div class="container">
   <div class="section-head"><div><h2>🛠️ Layanan KuyyinAjah</h2><p>Pilih layanan dan game. Detail permintaan akan dikirim ke admin melalui WhatsApp untuk konfirmasi.</p></div></div>
   <div class="service-grid">
@@ -481,8 +500,7 @@ html,body{overscroll-behavior-y:auto}
       <div class="cart-actions"><button class="btn secondary small" id="clearCart">Kosongkan keranjang</button><a class="btn small" href="#checkout">Lanjut checkout →</a></div>
     </div>
     <div class="panel checkout-panel" id="checkout"><h2>🧾 Checkout</h2><p class="sub">Isi data pemesan supaya admin bisa memproses pesanan dengan benar.</p>
-      <div class="checkout-step"><span class="step-number">1</span><span>Isi nama dan kontak yang bisa dihubungi.</span></div>
-      <label class="field-label" for="customerName">Nama pemesan <span style="color:#fca5a5">*</span></label><input class="field" id="customerName" maxlength="60" placeholder="Nama kamu" autocomplete="name">
+      <div class="checkout-step"><span class="step-number">1</span><span>Isi nomor WhatsApp aktif agar admin bisa menghubungi kamu.</span></div>
       <label class="field-label" for="customerContact">Nomor WhatsApp aktif <span style="color:#fca5a5">*</span></label><input class="field" id="customerContact" type="tel" maxlength="25" placeholder="Contoh: 08xxxxxxxxxx" autocomplete="tel">
       <div class="checkout-step"><span class="step-number">2</span><span>Pilih metode pembayaran yang ingin digunakan. Pembayaran belum otomatis diproses.</span></div>
       <label class="field-label" for="voucherCode">🎟️ Kode voucher diskon</label>
@@ -513,7 +531,8 @@ html,body{overscroll-behavior-y:auto}
   <div id="ordersList" class="order-list" style="margin-top:16px"></div>
 </div></div></section>
 <section class="section" id="help"><div class="container">
-  <div class="section-head"><div><h2>🛟 Pusat Bantuan & FAQ</h2><p>Jawaban singkat untuk pertanyaan umum saat belanja di KuyyinAjah.</p></div></div>
+  <div class="section-head"><div><h2>🛟 Pusat Bantuan & FAQ</h2><p>Tekan tombol di samping untuk melihat panduan dan pertanyaan umum.</p></div><button class="btn secondary small" id="toggleHelpContent" type="button" aria-expanded="false" aria-controls="helpContent">＋ Buka Bantuan</button></div>
+  <div id="helpContent" hidden>
   <div class="panel" style="margin-bottom:14px"><label class="field-label" for="helpSearch">🔎 Cari bantuan</label><input class="field" id="helpSearch" placeholder="Contoh: voucher, pembayaran, ID salah, pesanan..." autocomplete="off"><p class="note" id="helpSearchStatus">Ketik kata kunci untuk menyaring FAQ.</p></div>
   <div class="help-cards">
     <div class="help-card"><span style="font-size:24px">💬</span><strong>Chat Admin</strong><p>Tanyakan stok, harga, atau kendala pesanan langsung ke admin.</p><a class="btn small" target="_blank" rel="noopener" href="https://wa.me/6285165757372?text=Halo%20Admin%20KuyyinAjah%2C%20saya%20butuh%20bantuan.">Hubungi WhatsApp ↗</a></div>
@@ -530,9 +549,11 @@ html,body{overscroll-behavior-y:auto}
     <details class="faq-item" open><summary>Bagaimana cara memakai voucher diskon?</summary><div class="faq-answer">Masukkan kode voucher pada kolom voucher di keranjang/checkout, lalu tekan Terapkan. Periksa apakah diskon muncul pada ringkasan total sebelum mengirim pesanan. Voucher yang kedaluwarsa atau nonaktif tidak dapat digunakan.</div></details>
     <details class="faq-item" open><summary>Bagaimana cara pesan jasa JB akun?</summary><div class="faq-answer">Buka bagian JB, pilih game dan keperluan (beli, jual, atau tukar tambah), lalu isi detail yang diperlukan. Tekan Konfirmasi Admin untuk mengirim rincian ke WhatsApp. Jangan berikan password atau OTP.</div></details>
     <details class="faq-item" open><summary>Bagaimana cara memesan jasa joki?</summary><div class="faq-answer">Buka bagian Joki, pilih game dan jenis layanan, lalu isi target atau detail yang diminta. Tekan Konfirmasi Admin untuk mengirim permintaan ke WhatsApp. Pastikan harga, target, dan ketentuan disepakati dengan admin terlebih dahulu.</div></details>
+    <details class="faq-item" open><summary>Bagaimana cara memesan Joki Tugas?</summary><div class="faq-answer">Buka bagian Joki Tugas, pilih jenis layanan seperti editing, desain, makalah, presentasi/PPT, poster/brosur, atau layout dokumen. Isi detail tugas dan deadline jika ada, lalu tekan Konsultasi Joki Tugas via WhatsApp. Admin akan mengonfirmasi kebutuhan, estimasi waktu, dan biaya. Gunakan layanan ini sebagai bantuan belajar dan penyusunan; pastikan hasil akhir kamu pahami dan periksa sendiri.</div></details>
     <details class="faq-item" open><summary>Bagaimana cara memesan layanan sosial media?</summary><div class="faq-answer">Pilih layanan, masukkan username atau tautan akun sesuai petunjuk, lalu pilih paket. Periksa harga dan detailnya sebelum menekan Konfirmasi Admin. Jangan berikan kata sandi akun.</div></details>
     <details class="faq-item" open><summary>Kenapa voucher atau status pesanan saya tidak muncul di perangkat lain?</summary><div class="faq-answer">Versi HTML ini menyimpan banyak data di browser/perangkat yang digunakan. Data tidak otomatis tersinkron ke perangkat lain. Hubungi admin melalui WhatsApp untuk konfirmasi pesanan atau voucher.</div></details>
     <details class="faq-item" open><summary>Bagaimana menghubungi admin?</summary><div class="faq-answer">Tekan tombol Hubungi WhatsApp di Pusat Bantuan. Sertakan nomor pesanan jika ada dan jelaskan kendala secara singkat. Jangan mengirim password atau kode OTP.</div></details>
+  </div>
   </div>
 
   <div class="panel" id="complaints" style="margin:18px 0">
@@ -605,7 +626,10 @@ html,body{overscroll-behavior-y:auto}
         <div class="admin-grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px">
           <div><label class="field-label" for="adminVoucherCode">Kode voucher</label><input class="field" id="adminVoucherCode" maxlength="24" placeholder="MISAL: KUYYIN15"></div>
           <div><label class="field-label" for="adminVoucherDiscount">Diskon (%)</label><input class="field" id="adminVoucherDiscount" type="number" min="1" max="90" value="10"></div>
+          <div><label class="field-label" for="adminVoucherAmount">Nominal diskon (Rp)</label><input class="field" id="adminVoucherAmount" type="number" min="0" step="1" placeholder="Kosong = pakai persen"></div>
           <div><label class="field-label" for="adminVoucherLabel">Nama promo</label><input class="field" id="adminVoucherLabel" maxlength="50" placeholder="Diskon pelanggan"></div>
+          <div><label class="field-label" for="adminVoucherQuota">Batas pengguna (orang)</label><input class="field" id="adminVoucherQuota" type="number" min="1" step="1" placeholder="Kosong = tanpa batas"></div>
+          <div><label class="field-label" for="adminVoucherEnd">Berakhir pada (tanggal & jam)</label><input class="field" id="adminVoucherEnd" type="datetime-local"></div>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="btn" type="button" id="adminVoucherSave">➕ Simpan Voucher</button><button class="btn secondary" type="button" id="adminVoucherReset">Pulihkan voucher demo</button></div>
         <p id="adminVoucherMessage" class="note" role="status"></p><div id="adminVoucherList"></div>
@@ -626,6 +650,7 @@ html,body{overscroll-behavior-y:auto}
           <div><label class="field-label" for="timedPromoPackage">Paket</label><select class="field" id="timedPromoPackage"></select></div>
           <div><label class="field-label" for="timedPromoPrice">Harga promo (Rp)</label><input class="field" id="timedPromoPrice" type="number" min="1" step="1" placeholder="Contoh: 9000"></div>
           <div><label class="field-label" for="timedPromoEnd">Berakhir pada (opsional)</label><input class="field" id="timedPromoEnd" class="field" type="datetime-local"></div>
+          <div><label class="field-label" for="timedPromoQuota">Batas kuota (opsional)</label><input class="field" id="timedPromoQuota" type="number" min="1" step="1" placeholder="Contoh: 10"></div>
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="btn" type="button" id="timedPromoSave">💾 Simpan Harga Promo</button><button class="btn secondary" type="button" id="timedPromoRemove">Hapus Promo Paket</button></div>
         <p id="timedPromoMessage" class="note" role="status"></p><div id="timedPromoList"></div>
@@ -638,7 +663,7 @@ html,body{overscroll-behavior-y:auto}
         </div>
         <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="btn" type="button" id="shopAppearanceSave">💾 Terapkan Tampilan</button><button class="btn secondary" type="button" id="shopAppearanceReset">Reset Tampilan</button></div><p id="shopAppearanceMessage" class="note" role="status"></p>
       </div>
-      <div class="panel" id="autoFlashSale" style="margin:18px 0;border:1px solid #fb7185"><h3 style="margin-top:0">⚡ Flash Sale Terjadwal Otomatis</h3><p class="sub">Jadwalkan diskon untuk semua paket dalam satu game. Harga normal otomatis kembali saat periode berakhir. Jadwal mengikuti waktu perangkat ini.</p><div class="admin-grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px"><div><label class="field-label" for="flashSaleGame">Game</label><select class="field" id="flashSaleGame"></select></div><div><label class="field-label" for="flashSaleDiscount">Diskon (%)</label><input class="field" id="flashSaleDiscount" class="field" type="number" min="1" max="80" value="10"></div><div><label class="field-label" for="flashSaleStart">Mulai</label><input class="field" id="flashSaleStart" class="field" type="datetime-local"></div><div><label class="field-label" for="flashSaleEnd">Berakhir</label><input class="field" id="flashSaleEnd" class="field" type="datetime-local"></div></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button class="btn" id="saveFlashSale" type="button">Jadwalkan Flash Sale</button><button class="btn secondary" id="clearFlashSale" type="button">Hapus Jadwal</button></div><p id="flashSaleMessage" class="note" role="status"></p><div id="flashSaleList"></div></div>
+      <div class="panel" id="autoFlashSale" style="margin:18px 0;border:1px solid #fb7185"><h3 style="margin-top:0">⚡ Flash Sale Terjadwal Otomatis</h3><p class="sub">Pilih paket, atur persentase diskon, atau ubah harga Flash Sale tiap paket secara manual. Harga normal otomatis kembali saat periode berakhir. Jadwal mengikuti waktu perangkat ini.</p><div class="admin-grid" style="grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px"><div><label class="field-label" for="flashSaleGame">Game</label><select class="field" id="flashSaleGame"></select></div><div><label class="field-label" for="flashSaleDiscount">Diskon (%)</label><input class="field" id="flashSaleDiscount" type="number" min="1" max="99" step="1" value="10" placeholder="Contoh: 20"></div><div class="wide" style="grid-column:1/-1"><label class="field-label">Pilih Paket yang Ikut Flash Sale</label><div id="flashSalePackages" class="flash-package-options" aria-live="polite"><p class="note">Pilih game terlebih dahulu.</p></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:7px"><button type="button" class="btn secondary small" id="flashSelectAllPackages">Pilih Semua Paket</button><button type="button" class="btn secondary small" id="flashClearPackages">Kosongkan Pilihan</button></div></div><div><label class="field-label" for="flashSaleStart">Mulai</label><input class="field" id="flashSaleStart" class="field" type="datetime-local"></div><div><label class="field-label" for="flashSaleEnd">Berakhir</label><input class="field" id="flashSaleEnd" class="field" type="datetime-local"></div></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:10px"><button class="btn" id="saveFlashSale" type="button">Jadwalkan Flash Sale</button><button class="btn secondary" id="clearFlashSale" type="button">Hapus Jadwal</button></div><p id="flashSaleMessage" class="note" role="status"></p><div id="flashSaleList"></div></div>
 <div class="panel" id="advancedHomeEditor" style="margin:18px 0;border:1px solid #34d399">
 <h3 style="margin-top:0">🧩 Editor Beranda Lanjutan</h3><p class="sub">Atur judul, deskripsi, tombol utama, dan tampil/sembunyikan bagian beranda. Perubahan hanya berlaku pada browser ini.</p>
 <label class="field-label" for="homeHeroTitle">Judul utama beranda</label><input class="field" id="homeHeroTitle" maxlength="80" placeholder="Top up favoritmu, cepat dan praktis!">
@@ -791,8 +816,9 @@ const DEFAULT_VOUCHERS={KUYYIN10:{discount:10,label:'Diskon 10%',enabled:true},H
 const VOUCHER_KEY='ka_admin_vouchers_v1';
 function getVouchers(){try{const v=JSON.parse(localStorage.getItem(VOUCHER_KEY)||'null');return v&&typeof v==='object'?v:{...DEFAULT_VOUCHERS}}catch{return {...DEFAULT_VOUCHERS}}}
 function saveVouchers(v){try{localStorage.setItem(VOUCHER_KEY,JSON.stringify(v));return true}catch{return false}}
+function voucherAvailability(v){if(!v||v.enabled===false)return {ok:false,reason:'Voucher tidak aktif.'};if(v.endsAt&&Date.now()>new Date(v.endsAt).getTime())return {ok:false,reason:'Masa berlaku voucher sudah berakhir.'};const limit=Number(v.quota)||0,used=Number(v.used)||0;if(limit>0&&used>=limit)return {ok:false,reason:'Kuota voucher sudah habis.'};return {ok:true,remaining:limit>0?Math.max(0,limit-used):null};}
 function getCartSubtotal(){return cart.reduce((sum,x)=>sum+Number(x.price||0)*Number(x.qty||1),0)}
-function getDiscount(){return activeVoucher?Math.floor(getCartSubtotal()*activeVoucher.discount/100):0}
+function getDiscount(){if(!activeVoucher)return 0;const subtotal=getCartSubtotal();const fixed=Number(activeVoucher.amount)||0;return Math.min(subtotal,fixed>0?Math.floor(fixed):Math.floor(subtotal*(Number(activeVoucher.discount)||0)/100))}
 function getFinalTotal(){return Math.max(0,getCartSubtotal()-getDiscount())}
 function makeOrderNumber(){const d=new Date(),date=[d.getFullYear(),String(d.getMonth()+1).padStart(2,'0'),String(d.getDate()).padStart(2,'0')].join('');let no;do{no='KYA-'+date+'-'+Math.random().toString(36).slice(2,6).toUpperCase()}while(orders.some(o=>o.no===no));return no}
 function readStore(key,fallback){try{const x=JSON.parse(localStorage.getItem(key)||'null');return Array.isArray(x)?x:fallback}catch{return fallback}}
@@ -929,6 +955,10 @@ function getProductDetails(game){
  const saved=readProductDetails()[game.key]||{};
  return {description:saved.description||productDescriptionDefault(game),category:saved.category||game.category||'Game top up',badge:saved.badge||'Paket tersedia',image:saved.image||'',...saved};
 }
+function renderGameVisual(game){
+ const image=getProductDetails(game).image||'';
+ return `<span class="game-icon game-icon-with-cover">${image?`<img src="${esc(image)}" alt="Cover ${esc(game.name)}" onerror="this.hidden=true;this.nextElementSibling.hidden=false"><span hidden>${esc(game.icon||'🎮')}</span>`:esc(game.icon||'🎮')}</span>`;
+}
 
 let detailEditorLocalImage='';
 function fillDetailAdminGameSelect(){
@@ -1017,7 +1047,7 @@ function openProductDetails(gameKey){
  $('productDetailTags').innerHTML='';
  [detail.category||'Game top up',detail.badge||'Paket tersedia','Konfirmasi via WhatsApp'].forEach(t=>{const el=document.createElement('span');el.textContent=t;$('productDetailTags').append(el);});
  const wrap=$('productDetailPackages');
- wrap.innerHTML=g.packages.map((p,i)=>`<div class="detail-package"><div><strong>${esc(p[0])}</strong><small>${rupiah(p[1])}</small></div><button type="button" class="btn" data-detail-buy="${esc(g.key)}" data-detail-pkg="${i}">Pilih</button></div>`).join('');
+ wrap.innerHTML=g.packages.map((p,i)=>{const promo=getTimedPromos()[promoKey(g.key,p[0])],price=getPackagePrice(g.key,p[0],p[1]),active=isPackagePromoActive(g.key,p[0])&&price<Number(p[1]),remaining=Number(promo?.quota)>0?Math.max(0,Number(promo.quota)-Number(promo.used||0)):null;return `<div class="detail-package"><div><strong>${esc(p[0])}${active?' <span class="pill" style="display:inline-block;margin-left:4px;background:#7f1d1d;color:#fecaca">🔥 PROMO</span>':''}${active&&remaining!==null?` <span class="pill" style="display:inline-block;margin-left:4px;background:#854d0e;color:#fef3c7">SISA ${remaining}</span>`:''}</strong><small>${active?`<del style="color:var(--muted);margin-right:6px">${rupiah(p[1])}</del><strong style="color:#22c55e">${rupiah(price)}</strong>`:rupiah(p[1])}</small></div><button type="button" class="btn" data-detail-buy="${esc(g.key)}" data-detail-pkg="${i}">Pilih</button></div>`;}).join('');
  wrap.querySelectorAll('[data-detail-buy]').forEach(b=>b.addEventListener('click',()=>{
    const key=b.dataset.detailBuy, index=Number(b.dataset.detailPkg);
    closeProductDetails();
@@ -1047,18 +1077,35 @@ function renderGames(){
  const category=$('gameCategory')?.value||'all';
  const shown=products.filter(g=>!g.disabled&&(category==='all'||g.category===category)&&g.name.toLowerCase().includes(query));
  if(selectedGameKey&&!shown.some(g=>g.key===selectedGameKey))selectedGameKey='';
- $('gamePicker').innerHTML=shown.length?shown.map(g=>`<div class="game-choice-wrap"><button type="button" class="game-choice ${selectedGameKey===g.key?'active':''}" data-select-game="${esc(g.key)}"><span class="game-icon">${esc(g.icon)}</span><span><strong>${esc(g.name)}</strong><small>${g.packages.length} pilihan paket</small></span></button><button type="button" class="catalog-open-details" data-product-details="${esc(g.key)}">ⓘ Detail produk <span>→</span></button></div>`).join(''):'<div class="empty" style="grid-column:1/-1">Game tidak ditemukan.</div>';
+ $('gamePicker').innerHTML=shown.length?shown.map(g=>`<div class="game-choice-wrap"><button type="button" class="game-choice ${selectedGameKey===g.key?'active':''}" data-select-game="${esc(g.key)}">${renderGameVisual(g)}<span><strong>${esc(g.name)}</strong><small>${g.packages.length} pilihan paket</small></span></button><button type="button" class="catalog-open-details" data-product-details="${esc(g.key)}">ⓘ Detail produk <span>→</span></button></div>`).join(''):'<div class="empty" style="grid-column:1/-1">Game tidak ditemukan.</div>';
  $('gamePicker').querySelectorAll('[data-select-game]').forEach(b=>b.addEventListener('click',()=>{selectedGameKey=b.dataset.selectGame;renderGames()}));
  $('gamePicker').querySelectorAll('[data-product-details]').forEach(b=>b.addEventListener('click',()=>openProductDetails(b.dataset.productDetails)));
  const g=products.find(x=>x.key===selectedGameKey&&shown.some(y=>y.key===x.key));
- if(!g){$('selectedGameArea').innerHTML='<div class="empty">🎮 Pilih game di atas untuk melihat semua item top up-nya.</div>';return}
+ if(!g){$('selectedGameArea').innerHTML='';return}
  const q=($('gameSearch').value||'').trim().toLowerCase();
- const packs=g.packages.filter(p=>!q||g.name.toLowerCase().includes(q)||p[0].toLowerCase().includes(q));
+ const packs=g.packages.filter(p=>!q||g.name.toLowerCase().includes(q)||p[0].toLowerCase().includes(q)).sort((a,b)=>{const ai=g.packages.indexOf(a),bi=g.packages.indexOf(b);return Number(isFavorite(g.key,bi))-Number(isFavorite(g.key,ai));});
  const isML=g.key==='ml'||/server/i.test(g.hint||'');
- $('selectedGameArea').innerHTML=`<article class="game-card selected-game"><div class="selected-game-head"><span class="game-icon">${esc(g.icon)}</span><div><h3>${esc(g.name)}</h3><p>Isi detail akun dengan benar sebelum memilih paket. <span style="color:var(--muted)">${((JSON.parse(localStorage.getItem('ka_service_status_v1')||'{}')[g.key]||'available')==='available')?'🟢 Layanan tersedia':((JSON.parse(localStorage.getItem('ka_service_status_v1')||'{}')[g.key]||'')==='maintenance'?'🟠 Layanan pemeliharaan':'🔴 Layanan terganggu')}</span></p></div><button type="button" class="btn secondary small back-games" id="backToGames">Ganti game</button></div>
+ $('selectedGameArea').innerHTML=`<article class="game-card selected-game"><div class="selected-game-head">${renderGameVisual(g)}<div><h3>${esc(g.name)}</h3><p>Isi detail akun dengan benar sebelum memilih paket. <span style="color:var(--muted)">${((JSON.parse(localStorage.getItem('ka_service_status_v1')||'{}')[g.key]||'available')==='available')?'🟢 Layanan tersedia':((JSON.parse(localStorage.getItem('ka_service_status_v1')||'{}')[g.key]||'')==='maintenance'?'🟠 Layanan pemeliharaan':'🔴 Layanan terganggu')}</span></p></div><button type="button" class="btn secondary small back-games" id="backToGames">Ganti game</button></div>
  <div class="smart-id-grid"><div class="${isML?'':'wide'}"><label class="field-label" for="id-${esc(g.key)}">${esc(g.field||'ID Game')} <span style="color:#fca5a5">*</span></label><input class="field game-id" id="id-${esc(g.key)}" maxlength="40" placeholder="${esc(g.hint||'Masukkan ID game')}" autocomplete="off" inputmode="numeric"><p class="input-hint">Periksa kembali ID sebelum checkout.</p><div class="validation-note" id="idValidation"></div></div>${isML?`<div><label class="field-label" for="server-${esc(g.key)}">Server ID <span style="color:#fca5a5">*</span></label><input class="field" id="server-${esc(g.key)}" maxlength="12" placeholder="Contoh: 1234" inputmode="numeric" autocomplete="off"><p class="input-hint">Masukkan angka server sesuai akun.</p><div class="validation-note" id="serverValidation"></div></div>`:''}</div>
- <div class="package-list">${packs.map(p=>{const i=g.packages.indexOf(p);const badge=getFeaturedMap()[`${g.key}::${p[0]}`]||'';const badgeText=badge==='promo'?'🔥 PROMO':badge==='bestseller'?'🏆 TERLARIS':badge==='recommend'?'⭐ REKOMENDASI':'';const effectivePrice=getPackagePrice(g.key,p[0],p[1]),promoActive=isPackagePromoActive(g.key,p[0])&&effectivePrice<Number(p[1]);const st=(JSON.parse(localStorage.getItem('ka_service_status_v1')||'{}')[g.key]||'available');const stk=JSON.parse(localStorage.getItem('ka_package_stock_v1')||'{}')[g.key+'::'+p[0]];const outOfStock=stk!==undefined&&Number(stk)<=0;const serviceOk=st==='available'&&!outOfStock;const stockLabel=st==='maintenance'?'🟠 Pemeliharaan':st==='unavailable'?'🔴 Gangguan':outOfStock?'⛔ Stok habis':stk===undefined?'🟢 Tersedia':'📦 Stok '+stk;return `<div class="package"><div><strong>${esc(p[0])} ${badgeText?`<span class="pill" style="display:inline-block;margin-left:4px">${badgeText}</span>`:''} ${promoActive?'<span class="pill" style="display:inline-block;margin-left:4px;background:#7f1d1d;color:#fecaca">DISKON</span>':''}</strong><small style="display:block;color:var(--muted);margin-top:3px">${stockLabel}</small><span class="price">${promoActive?`<del style="color:var(--muted);font-weight:500;margin-right:5px">${rupiah(p[1])}</del>`:''}${rupiah(effectivePrice)}</span></div><div class="favorite-actions"><button class="btn secondary small fav-btn ${isFavorite(g.key,i)?'is-favorite':''}" type="button" data-fav-toggle="${esc(g.key)}" data-fav-index="${i}" aria-label="Simpan ke favorit">${isFavorite(g.key,i)?'♥':'♡'}</button><button class="btn secondary small" data-add-game="${esc(g.key)}" data-pkg="${i}" ${serviceOk?'':'disabled title="Layanan tidak tersedia"'}>${serviceOk?'Tambah':'Tidak tersedia'}</button><button class="btn small quick-buy-btn" data-quick-buy="${esc(g.key)}" data-pkg="${i}" ${serviceOk?'':'disabled title="Layanan tidak tersedia"'} aria-label="Beli cepat ${esc(p[0])}">⚡ Beli Cepat</button></div></div>`}).join('')||'<div class="empty">Paket tidak ditemukan.</div>'}</div></article>`;
+ <div class="nickname-check-panel" style="margin:12px 0 16px;padding:12px;border:1px solid var(--border);border-radius:14px;background:var(--surface,transparent)">
+   <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap">
+     <div><strong>🔎 Cek Nickname Akun</strong><p class="input-hint" style="margin:4px 0 0">Periksa nickname berdasarkan ID game sebelum membeli.</p></div>
+     <button type="button" class="btn secondary small" id="checkNicknameBtn">Cek Nickname</button>
+   </div>
+   <div id="nicknameLookupStatus" class="validation-note" role="status" aria-live="polite" style="margin-top:8px">Pengecekan nickname akan aktif setelah API game terhubung ke backend.</div>
+ </div>
+ <div class="package-list">${packs.map(p=>{const i=g.packages.indexOf(p);const badge=getFeaturedMap()[`${g.key}::${p[0]}`]||'';const badgeText=badge==='promo'?'🔥 PROMO':badge==='bestseller'?'🏆 TERLARIS':badge==='recommend'?'⭐ REKOMENDASI':'';const effectivePrice=getPackagePrice(g.key,p[0],p[1]),promoActive=isPackagePromoActive(g.key,p[0])&&effectivePrice<Number(p[1]),promoInfo=getTimedPromos()[promoKey(g.key,p[0])],promoRemaining=Number(promoInfo?.quota)>0?Math.max(0,Number(promoInfo.quota)-Number(promoInfo.used||0)):null;const serviceStatuses=JSON.parse(localStorage.getItem('ka_service_status_v1')||'{}');const st=(serviceStatuses[g.key+'::'+p[0]]||serviceStatuses[g.key]||'available');const stk=JSON.parse(localStorage.getItem('ka_package_stock_v1')||'{}')[g.key+'::'+p[0]];const outOfStock=stk!==undefined&&Number(stk)<=0;const serviceOk=st==='available'&&!outOfStock;const stockLabel=st==='maintenance'?'🟠 Pemeliharaan':st==='unavailable'?'🔴 Gangguan':outOfStock?'⛔ Stok habis':stk===undefined?'🟢 Tersedia':'📦 Stok '+stk;return `<div class="package"><div><strong>${esc(p[0])} ${badgeText?`<span class="pill" style="display:inline-block;margin-left:4px">${badgeText}</span>`:''} ${promoActive?'<span class="pill" style="display:inline-block;margin-left:4px;background:#7f1d1d;color:#fecaca">DISKON</span>':''}${promoActive&&promoRemaining!==null?`<span class="pill" style="display:inline-block;margin-left:4px;background:#854d0e;color:#fef3c7">SISA ${promoRemaining}</span>`:''}</strong><small style="display:block;color:var(--muted);margin-top:3px">${stockLabel}</small><span class="price">${promoActive?`<del style="color:var(--muted);font-weight:500;margin-right:5px">${rupiah(p[1])}</del>`:''}${rupiah(effectivePrice)}</span></div><div class="favorite-actions"><button class="btn secondary small fav-btn ${isFavorite(g.key,i)?'is-favorite':''}" type="button" data-fav-toggle="${esc(g.key)}" data-fav-index="${i}" aria-label="Simpan ke favorit">${isFavorite(g.key,i)?'♥':'♡'}</button><button class="btn secondary small" data-add-game="${esc(g.key)}" data-pkg="${i}" ${serviceOk?'':'disabled title="Layanan tidak tersedia"'}>${serviceOk?'Tambah':'Tidak tersedia'}</button><button class="btn small quick-buy-btn" data-quick-buy="${esc(g.key)}" data-pkg="${i}" ${serviceOk?'':'disabled title="Layanan tidak tersedia"'} aria-label="Beli cepat ${esc(p[0])}">⚡ Beli Cepat</button></div></div>`}).join('')||'<div class="empty">Paket tidak ditemukan.</div>'}</div></article>`;
  $('backToGames').addEventListener('click',()=>{selectedGameKey='';renderGames()});
+ $('checkNicknameBtn')?.addEventListener('click',()=>{
+   const id=$('id-'+g.key)?.value.trim()||'';
+   const server=$('server-'+g.key)?.value.trim()||'';
+   const status=$('nicknameLookupStatus');
+   if(!id){$('id-'+g.key)?.focus();status.textContent='Masukkan ID game terlebih dahulu.';return;}
+   if(!/^[A-Za-z0-9_-]{4,40}$/.test(id)){status.textContent='Format ID perlu diperiksa (4–40 karakter).';return;}
+   if(isML&&!/^\\d{1,12}$/.test(server)){$('server-'+g.key)?.focus();status.textContent='Masukkan Server ID yang benar terlebih dahulu.';return;}
+   status.textContent='ID sudah diisi. Pengecekan nickname belum aktif karena API game belum dihubungkan ke backend.';
+   showToast('Fitur cek nickname menunggu koneksi API backend.');
+ });
  $('selectedGameArea').querySelectorAll('[data-add-game]').forEach(b=>b.addEventListener('click',()=>{
    const game=products.find(x=>x.key===b.dataset.addGame),p=game.packages[Number(b.dataset.pkg)];if(!isPackageAvailableForSale(game,p)){showToast('Paket sedang tidak tersedia atau stok habis.');return;}const id=$('id-'+game.key).value.trim(),server=$('server-'+game.key)?.value.trim()||'';
    const idOk=/^[A-Za-z0-9_-]{4,40}$/.test(id);
@@ -1066,7 +1113,7 @@ function renderGames(){
    if(!idOk){$('id-'+game.key).focus();$('idValidation').textContent='Periksa format ID (4–40 karakter, huruf/angka).';showToast('Format ID perlu diperiksa.');return}
    if(isML&&!/^\d{1,12}$/.test(server)){$('server-'+game.key).focus();$('serverValidation').textContent='Server ID wajib berupa angka.';showToast('Isi Server ID dengan benar.');return}
    const account=isML?`${id} (${server})`:id;
-   cart.push({type:'game',name:game.name,package:p[0],price:getPackagePrice(game.key,p[0],p[1]),normalPrice:Number(p[1]),account,playerId:id,serverId:server,qty:1});
+   cart.push({type:'game',gameKey:game.key,name:game.name,package:p[0],price:getPackagePrice(game.key,p[0],p[1]),normalPrice:Number(p[1]),account,playerId:id,serverId:server,qty:1});
    saveAndRender();showToast('Paket ditambahkan. Periksa kembali ringkasan checkout.');
  }));
  $('selectedGameArea').querySelectorAll('[data-quick-buy]').forEach(b=>b.addEventListener('click',()=>{
@@ -1075,7 +1122,7 @@ function renderGames(){
  $('selectedGameArea').querySelectorAll('[data-fav-toggle]').forEach(b=>b.addEventListener('click',()=>toggleFavorite(b.dataset.favToggle,Number(b.dataset.favIndex))));
 }
 
-function isPackageAvailableForSale(game,pack){if(!game||!pack)return false;try{const st=JSON.parse(localStorage.getItem('ka_service_status_v1')||'{}')[game.key]||'available';const stocks=JSON.parse(localStorage.getItem('ka_package_stock_v1')||'{}');const q=stocks[game.key+'::'+pack[0]];return st==='available'&&(q===undefined||Number(q)>0)}catch{return true}}
+function isPackageAvailableForSale(game,pack){if(!game||!pack)return false;try{const statuses=JSON.parse(localStorage.getItem('ka_service_status_v1')||'{}');const st=statuses[game.key+'::'+pack[0]]||statuses[game.key]||'available';const stocks=JSON.parse(localStorage.getItem('ka_package_stock_v1')||'{}');const q=stocks[game.key+'::'+pack[0]];return st==='available'&&(q===undefined||Number(q)>0)}catch{return true}}
 function quickBuyGamePackage(gameKey,packageIndex){
  const game=products.find(x=>x.key===gameKey), pack=game?.packages[Number(packageIndex)];
  if(!game||!pack)return;if(!isPackageAvailableForSale(game,pack)){showToast('Paket sedang tidak tersedia atau stok habis.');return;}
@@ -1087,7 +1134,7 @@ function quickBuyGamePackage(gameKey,packageIndex){
  if(!/^[A-Za-z0-9_-]{4,40}$/.test(id)){idInput?.focus();if(idMsg)idMsg.textContent='Periksa format ID (4–40 karakter, huruf/angka).';showToast('Format ID perlu diperiksa.');return;}
  if(isML&&!/^\d{1,12}$/.test(server)){serverInput?.focus();if(serverMsg)serverMsg.textContent='Server ID wajib berupa angka.';showToast('Isi Server ID dengan benar.');return;}
  const account=isML?`${id} (${server})`:id;
- cart.push({type:'game',name:game.name,package:pack[0],price:getPackagePrice(game.key,pack[0],pack[1]),normalPrice:Number(pack[1]),account,playerId:id,serverId:server,qty:1});
+ cart.push({type:'game',gameKey:game.key,name:game.name,package:pack[0],price:getPackagePrice(game.key,pack[0],pack[1]),normalPrice:Number(pack[1]),account,playerId:id,serverId:server,qty:1});
  saveAndRender();
  showToast('Paket masuk checkout. Periksa detail sebelum lanjut.');
  const checkout=$('checkout');
@@ -1115,7 +1162,7 @@ function renderCheckoutReview(){
  box.innerHTML=cart.length?cart.map(x=>`<div class="checkout-line"><span>${esc(x.name)} — ${esc(x.package)} × ${Number(x.qty||1)}<small style="display:block;color:var(--muted)">${esc(x.account||'')}</small></span><strong>${rupiah(Number(x.price||0)*Number(x.qty||1))}</strong></div>`).join(''):'<p class="note">Tambahkan paket ke keranjang untuk melihat ringkasan.</p>';
  if($('checkoutSubtotal'))$('checkoutSubtotal').textContent=rupiah(total);
  if($('checkoutGrandTotal'))$('checkoutGrandTotal').textContent=rupiah(Math.max(0,total-getDiscount()));
- const discountLine=$('voucherDiscountLine');if(discountLine)discountLine.innerHTML=activeVoucher?`<span>Diskon ${esc(activeVoucher.code)} (${activeVoucher.discount}%)</span><strong>−${rupiah(getDiscount())}</strong>`:'';
+ const discountLine=$('voucherDiscountLine');if(discountLine)discountLine.innerHTML=activeVoucher?`<span>Diskon ${esc(activeVoucher.code)} (${activeVoucher.discount}%${Number(activeVoucher.amount)>0?' · nominal '+rupiah(activeVoucher.amount):''})</span><strong>−${rupiah(getDiscount())}</strong>`:'';
 }
 
 function renderCart(){
@@ -1152,23 +1199,28 @@ $('gameCategory').addEventListener('change',()=>{selectedGameKey='';renderGames(
 $('socialSearch').addEventListener('input',renderSocials);
 $('socialCategory').addEventListener('change',renderSocials);
 $('confirmOrderDetails')?.addEventListener('change',()=>{if($('confirmOrderDetails').checked)$('checkoutValidation').textContent='';});
-$('applyVoucherBtn')?.addEventListener('click',()=>{const code=String($('voucherCode')?.value||'').trim().toUpperCase();if(!code){activeVoucher=null;$('voucherStatus').textContent='Masukkan kode voucher terlebih dahulu.';renderCart();return}const v=getVouchers()[code];if(!v||v.enabled===false){activeVoucher=null;$('voucherStatus').textContent='Kode tidak valid atau sudah dinonaktifkan. Periksa kode promo.';renderCart();return}if(!cart.length){activeVoucher=null;$('voucherStatus').textContent='Tambahkan paket ke keranjang dulu.';renderCart();return}activeVoucher={code,discount:v.discount};$('voucherCode').value=code;$('voucherStatus').textContent=`Voucher ${code} berhasil dipakai — diskon ${v.discount}% (${rupiah(getDiscount())}).`;$('voucherStatus').style.color='#86efac';renderCart();showToast('Voucher berhasil dipakai!')});
+$('applyVoucherBtn')?.addEventListener('click',()=>{const code=String($('voucherCode')?.value||'').trim().toUpperCase();if(!code){activeVoucher=null;$('voucherStatus').textContent='Masukkan kode voucher terlebih dahulu.';renderCart();return}const v=getVouchers()[code],check=voucherAvailability(v);if(!v||!check.ok){activeVoucher=null;$('voucherStatus').textContent=v?check.reason:'Kode voucher tidak ditemukan.';$('voucherStatus').style.color='#fca5a5';renderCart();return}if(!cart.length){activeVoucher=null;$('voucherStatus').textContent='Tambahkan paket ke keranjang dulu.';renderCart();return}activeVoucher={code,discount:Number(v.discount)||0,amount:Number(v.amount)||0};$('voucherCode').value=code;$('voucherStatus').textContent=`Voucher ${code} berhasil dipakai — diskon ${v.discount}%${Number(v.amount)>0?' (nominal '+rupiah(v.amount)+')':''}; potongan saat ini ${rupiah(getDiscount())}.${check.remaining!==null?' Sisa kuota: '+check.remaining+' pengguna.':''}`;$('voucherStatus').style.color='#86efac';renderCart();showToast('Voucher berhasil dipakai!')});
 $('voucherCode')?.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('applyVoucherBtn')?.click()}});
 $('checkoutBtn').addEventListener('click',()=>{
  if(!cart.length){showToast('Keranjang masih kosong.');return}
- const name=$('customerName').value.trim(),contact=$('customerContact').value.trim(),payment=$('paymentMethod').value,note=$('orderNote').value.trim();
- if(!name){$('customerName').focus();showToast('Isi nama pemesan terlebih dahulu.');return}
+ const contact=$('customerContact').value.trim(),payment=$('paymentMethod').value,note=$('orderNote').value.trim();
  if(!contact){$('customerContact').focus();showToast('Isi nomor WhatsApp aktif.');return}
  if(!payment){$('paymentMethod').focus();showToast('Pilih metode pembayaran.');return}
  if(!$('confirmOrderDetails')?.checked){$('checkoutValidation').textContent='Centang konfirmasi setelah memeriksa ID, paket, dan total.';$('confirmOrderDetails')?.focus();showToast('Konfirmasi detail pesanan terlebih dahulu.');return}
+ if(activeVoucher){const allV=getVouchers(),v=allV[activeVoucher.code],check=voucherAvailability(v);if(!check.ok){activeVoucher=null;$('voucherStatus').textContent=check.reason+' Silakan hapus kode atau gunakan voucher lain.';$('voucherStatus').style.color='#fca5a5';renderCart();showToast('Voucher tidak bisa digunakan.');return}}
  $('checkoutValidation').textContent='';
  const subtotal=getCartSubtotal(),discount=getDiscount(),total=Math.max(0,subtotal-discount),no=makeOrderNumber();
  const itemCopy=cart.map(x=>({...x}));
+ // Versi tanpa backend: kuota lokal berkurang saat pesanan dibuat, bukan saat pembayaran terverifikasi.
+ const promoCounts=getTimedPromos();let promoQuotaChanged=false;
+ itemCopy.forEach(item=>{if(item.type!=='game')return;const key=promoKey(item.gameKey||products.find(g=>g.name===item.name)?.key,item.package),promo=promoCounts[key];if(promo&&isTimedPromoAvailable(promo)&&Number(promo.quota)>0){promo.used=Math.min(Number(promo.quota),Number(promo.used||0)+Math.max(1,Number(item.qty||1)));promoQuotaChanged=true;}});
+ if(promoQuotaChanged){localStorage.setItem(TIMED_PROMOS_KEY,JSON.stringify(promoCounts));}
  const lines=itemCopy.map((x,i)=>`${i+1}. ${x.name} — ${x.package}\n   ${x.type==='game'?'ID Game':'Akun'}: ${x.account}\n   Harga: ${rupiah(x.price)} × ${Number(x.qty||1)} = ${rupiah(Number(x.price||0)*Number(x.qty||1))}`).join('\n');
  const voucherText=activeVoucher?`${activeVoucher.code} (${activeVoucher.discount}%): -${rupiah(discount)}`:'Tidak digunakan';
- const msg=`Halo Admin KuyyinAjah, saya ingin konfirmasi pesanan.\n\nNo. Pesanan: ${no}\nNama: ${name}\nKontak: ${contact}\n\n${lines}\n\nSubtotal: ${rupiah(subtotal)}\nVoucher: ${voucherText}\nDiskon: -${rupiah(discount)}\nTOTAL SETELAH DISKON: ${rupiah(total)}\nMetode pembayaran: ${payment}\nCatatan: ${note||'-'}\n\nMohon konfirmasi total akhir, ketersediaan, dan instruksi pembayaran.`;
- orders.unshift({no,items:itemCopy,subtotal,discount,voucher:activeVoucher?.code||'',total,payment,customer:name,contact,note,date:new Date().toLocaleString('id-ID'),status:'Menunggu konfirmasi admin',statusHistory:[{status:'Menunggu konfirmasi admin',date:new Date().toLocaleString('id-ID'),note:'Pesanan dibuat'}]});
- orders=orders.slice(0,30);activeVoucher=null;if($('voucherCode'))$('voucherCode').value='';if($('voucherStatus'))$('voucherStatus').textContent='Voucher sudah digunakan untuk pesanan ini.';addNotification('Pesanan baru dibuat',`Pesanan ${no} dibuat dengan status Menunggu konfirmasi admin.`,no);cart=[];$('confirmOrderDetails').checked=false;saveAndRender();showToast('Pesanan disimpan. WhatsApp akan dibuka.');
+ if(activeVoucher){const allV=getVouchers(),v=allV[activeVoucher.code];v.used=(Number(v.used)||0)+1;saveVouchers(allV);renderVoucherAdmin();}
+ const msg=`Halo Admin KuyyinAjah, saya ingin konfirmasi pesanan.\n\nNo. Pesanan: ${no}\nKontak WhatsApp: ${contact}\n\n${lines}\n\nSubtotal: ${rupiah(subtotal)}\nVoucher: ${voucherText}\nDiskon: -${rupiah(discount)}\nTOTAL SETELAH DISKON: ${rupiah(total)}\nMetode pembayaran: ${payment}\nCatatan: ${note||'-'}\n\nMohon konfirmasi total akhir, ketersediaan, dan instruksi pembayaran.`;
+ orders.unshift({no,items:itemCopy,subtotal,discount,voucher:activeVoucher?.code||'',total,payment,customer:'',contact,note,date:new Date().toLocaleString('id-ID'),status:'Menunggu konfirmasi admin',statusHistory:[{status:'Menunggu konfirmasi admin',date:new Date().toLocaleString('id-ID'),note:'Pesanan dibuat'}]});
+ orders=orders.slice(0,30);if(promoQuotaChanged){renderGames();renderTimedPromoList();renderActivePromoBanner();}activeVoucher=null;if($('voucherCode'))$('voucherCode').value='';if($('voucherStatus'))$('voucherStatus').textContent='Voucher sudah digunakan untuk pesanan ini.';addNotification('Pesanan baru dibuat',`Pesanan ${no} dibuat dengan status Menunggu konfirmasi admin.`,no);cart=[];$('confirmOrderDetails').checked=false;saveAndRender();showToast('Pesanan disimpan. WhatsApp akan dibuka.');
  const url='https://wa.me/'+ADMIN_WA+'?text='+encodeURIComponent(msg);
  const win=window.open(url,'_blank','noopener');if(!win)location.href=url;
 });
@@ -1176,20 +1228,17 @@ $('clearCart').addEventListener('click',()=>{if(!cart.length){showToast('Keranja
 $('clearOrders').addEventListener('click',()=>{if(!orders.length){showToast('Belum ada riwayat.');return}if(confirm('Hapus semua riwayat pesanan di perangkat ini?')){orders=[];saveAndRender();showToast('Riwayat dihapus.')}});
 loadCatalog();
 populatePriceEditor();renderGames();renderSocials();renderCart();renderOrders();
-setupTheme();renderFavorites();renderTickets();applyShopAppearance();setupHelpSearch();fillTimedPromoGames();renderTimedPromoList();
+setupTheme();renderFavorites();renderTickets();applyShopAppearance();setupHelpToggle();setupHelpSearch();fillTimedPromoGames();renderTimedPromoList();
 
 
-// Ulasan pelanggan: ulasan contoh ditandai sebagai contoh, bukan testimoni asli.
-const DEFAULT_REVIEWS = [
- {name:'Contoh Player',rating:5,text:'Contoh tampilan ulasan — ganti dengan ulasan pelanggan asli setelah transaksi.',date:'Contoh'},
- {name:'Contoh Gamer',rating:4,text:'Contoh ulasan. Rating dan komentar ini hanya placeholder desain.',date:'Contoh'}
-];
+// Tidak menampilkan ulasan contoh. Daftar hanya berisi ulasan yang benar-benar dikirim.
+const DEFAULT_REVIEWS = [];
 function loadReviews(){try{return JSON.parse(localStorage.getItem('ka_reviews')||'[]')}catch(e){return []}}
 function renderReviews(){
  const list=$('reviewList'); if(!list)return;
  const reviews=loadReviews();
  const all=reviews.length?reviews:DEFAULT_REVIEWS;
- list.innerHTML=all.map(r=>`<article class="review-card"><div class="review-stars" aria-label="${Number(r.rating)} dari 5">${'★'.repeat(Number(r.rating)||5)}${'☆'.repeat(5-(Number(r.rating)||5))}</div><p>${esc(r.text)}</p><div class="review-meta"><strong>${esc(r.name)}</strong><span class="review-tag">${r.verified?'✓ Terverifikasi · ':''}${esc(r.date||'Ulasan lokal')}</span></div></article>`).join('');
+ list.innerHTML=all.length?all.map(r=>`<article class="review-card"><div class="review-stars" aria-label="${Number(r.rating)} dari 5">${'★'.repeat(Number(r.rating)||5)}${'☆'.repeat(5-(Number(r.rating)||5))}</div><p>${esc(r.text)}</p><div class="review-meta"><strong>${esc(r.name)}</strong><span class="review-tag">${r.verified?'✓ Terverifikasi · ':''}${esc(r.date||'Ulasan lokal')}</span></div></article>`).join(''):'<p class="sub" style="grid-column:1/-1">Belum ada ulasan pelanggan. Ulasan akan tampil di sini setelah pelanggan mengirimkannya.</p>';
 }
 $('reviewForm')?.addEventListener('submit',e=>{
  e.preventDefault();
@@ -1425,11 +1474,52 @@ function getFeaturedMap(){try{const v=JSON.parse(localStorage.getItem('ka_featur
 const TIMED_PROMOS_KEY='ka_timed_package_promos_v1';
 function getTimedPromos(){try{const v=JSON.parse(localStorage.getItem(TIMED_PROMOS_KEY)||'{}');return v&&typeof v==='object'?v:{}}catch{return {}}}
 function promoKey(gameKey,packageName){return `${gameKey}::${packageName}`}
-function getPackagePrice(gameKey,packageName,normalPrice){const promo=getTimedPromos()[promoKey(gameKey,packageName)];if(!promo||!Number.isFinite(Number(promo.price))||Number(promo.price)<1)return Number(normalPrice);if(promo.startsAt&&Date.now()<new Date(promo.startsAt).getTime())return Number(normalPrice);if(promo.endsAt&&Date.now()>=new Date(promo.endsAt).getTime())return Number(normalPrice);return Math.min(Number(normalPrice),Number(promo.price))}
-function isPackagePromoActive(gameKey,packageName){const p=getTimedPromos()[promoKey(gameKey,packageName)];return !!(p&&Number(p.price)>0&&(!p.startsAt||Date.now()>=new Date(p.startsAt).getTime())&&(!p.endsAt||Date.now()<new Date(p.endsAt).getTime()))}
+function isTimedPromoAvailable(promo){if(!promo||!Number.isFinite(Number(promo.price))||Number(promo.price)<1)return false;if(promo.startsAt&&Date.now()<new Date(promo.startsAt).getTime())return false;if(promo.endsAt&&Date.now()>=new Date(promo.endsAt).getTime())return false;if(Number(promo.quota)>0&&Number(promo.used||0)>=Number(promo.quota))return false;return true}
+function getPackagePrice(gameKey,packageName,normalPrice){const promo=getTimedPromos()[promoKey(gameKey,packageName)];if(!isTimedPromoAvailable(promo))return Number(normalPrice);return Math.min(Number(normalPrice),Number(promo.price))}
+function isPackagePromoActive(gameKey,packageName){return isTimedPromoAvailable(getTimedPromos()[promoKey(gameKey,packageName)])}
 function fillTimedPromoGames(){const gs=$('timedPromoGame');if(!gs)return;const old=gs.value;gs.innerHTML='';products.forEach(g=>gs.add(new Option(g.name,g.key)));if(products.some(g=>g.key===old))gs.value=old;updateTimedPromoPackages();}
-function updateTimedPromoPackages(){const gs=$('timedPromoGame'),ps=$('timedPromoPackage');if(!gs||!ps)return;const g=products.find(x=>x.key===gs.value);ps.innerHTML='';(g?.packages||[]).forEach(p=>ps.add(new Option(`${p[0]} — ${rupiah(p[1])}`,p[0])));const active=getTimedPromos()[promoKey(g?.key,ps.value)];if($('timedPromoPrice'))$('timedPromoPrice').value=active?.price||'';if($('timedPromoEnd'))$('timedPromoEnd').value=active?.endsAt||'';}
-function renderTimedPromoList(){const box=$('timedPromoList');if(!box)return;const promos=getTimedPromos();const rows=Object.entries(promos).filter(([key,v])=>v&&v.price).map(([key,v])=>{const [gk,pn]=key.split('::');const g=products.find(x=>x.key===gk);const active=!v.endsAt||Date.now()<new Date(v.endsAt).getTime();return `<div class="package" style="margin-top:8px"><div><strong>${esc(g?.name||gk)} — ${esc(pn)}</strong><small>${rupiah(v.price)} · ${active?'Aktif':'Kedaluwarsa'}${v.endsAt?' · sampai '+esc(new Date(v.endsAt).toLocaleString('id-ID')):''}</small></div><button class="btn secondary small" type="button" data-promo-edit="${esc(key)}">Pilih</button></div>`}).join('');box.innerHTML=rows||'<p class="note">Belum ada harga promo khusus.</p>';box.querySelectorAll('[data-promo-edit]').forEach(b=>b.onclick=()=>{const [gk,pn]=b.dataset.promoEdit.split('::');if($('timedPromoGame'))$('timedPromoGame').value=gk;updateTimedPromoPackages();if($('timedPromoPackage'))$('timedPromoPackage').value=pn;const p=getTimedPromos()[b.dataset.promoEdit];if(p){$('timedPromoPrice').value=p.price;$('timedPromoEnd').value=p.endsAt||'';}});}
+function updateTimedPromoFields(){const gs=$('timedPromoGame'),ps=$('timedPromoPackage');if(!gs||!ps)return;const g=products.find(x=>x.key===gs.value);const active=g&&ps.value?getTimedPromos()[promoKey(g.key,ps.value)]:null;if($('timedPromoPrice'))$('timedPromoPrice').value=active?.price||'';if($('timedPromoEnd'))$('timedPromoEnd').value=active?.endsAt||'';if($('timedPromoQuota'))$('timedPromoQuota').value=active?.quota||'';}
+function updateTimedPromoPackages(){const gs=$('timedPromoGame'),ps=$('timedPromoPackage');if(!gs||!ps)return;const g=products.find(x=>x.key===gs.value);const previous=ps.value;ps.innerHTML='';(g?.packages||[]).forEach(p=>ps.add(new Option(`${p[0]} — ${rupiah(p[1])}`,p[0])));if(g?.packages?.some(p=>p[0]===previous))ps.value=previous;updateTimedPromoFields();}
+
+function renderActivePromoBanner(){
+ const section=$('activePromoSection'),cards=$('activePromoCards'),count=$('activePromoCount');
+ if(!section||!cards)return;
+ const promos=getTimedPromos(),rows=[];
+ Object.entries(promos).forEach(([key,promo])=>{
+  if(!isTimedPromoAvailable(promo))return;
+  const [gameKey,packageName]=key.split('::');
+  const game=products.find(g=>g.key===gameKey);
+  const pack=game?.packages.find(p=>p[0]===packageName);
+  if(!game||!pack)return;
+  const price=getPackagePrice(gameKey,packageName,pack[1]);
+  if(price>=Number(pack[1]))return;
+  const remaining=Number(promo.quota)>0?Math.max(0,Number(promo.quota)-Number(promo.used||0)):null;
+  rows.push({game,packageName,normal:pack[1],price,remaining,endsAt:promo.endsAt||''});
+ });
+ section.hidden=rows.length===0;
+ if(count)count.textContent=String(rows.length);
+ cards.innerHTML=rows.map((r,i)=>`<button type="button" data-active-promo-game="${esc(r.game.key)}" style="display:flex;align-items:center;justify-content:space-between;gap:8px;width:100%;text-align:left;border:0;border-bottom:1px solid var(--border);padding:9px 2px;background:transparent;color:inherit;cursor:pointer"><span style="min-width:0;flex:1"><strong style="display:block;font-size:.86rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${esc(r.game.name)} · ${esc(r.packageName)}</strong><small style="color:var(--muted);font-size:.75rem">${r.remaining===null?'Promo aktif':`Sisa ${r.remaining} kuota`}</small><small data-promo-countdown="${esc(r.game.key+'::'+r.packageName)}" style="display:block;color:#fb923c;font-size:.72rem;font-weight:900;margin-top:3px">${r.endsAt?'⏳ Menghitung waktu…':'Tanpa batas waktu'}</small></span><span style="text-align:right;white-space:nowrap"><del style="display:block;color:var(--muted);font-size:.72rem">${rupiah(r.normal)}</del><b style="color:#22c55e;font-size:.85rem">${rupiah(r.price)}</b><small style="display:block;color:#93c5fd;font-size:.68rem;margin-top:2px">Lihat paket →</small></span></button>`).join('');
+ cards.querySelectorAll('[data-active-promo-game]').forEach(btn=>btn.addEventListener('click',()=>openProductDetails(btn.dataset.activePromoGame)));
+ const toggle=$('activePromoToggle');
+ if(toggle&&!toggle.dataset.bound){toggle.dataset.bound='1';toggle.addEventListener('click',()=>{const opening=cards.style.display==='none'||cards.hidden;cards.hidden=!opening;cards.style.display=opening?'flex':'none';toggle.setAttribute('aria-expanded',String(opening));toggle.lastElementChild.textContent=opening?'▴':'▾';});cards.style.display='none';}
+}
+
+
+function updateTimedPromoCountdowns(){
+ const now=Date.now();
+ document.querySelectorAll('[data-promo-countdown]').forEach(el=>{
+  const promo=getTimedPromos()[el.dataset.promoCountdown];
+  if(!promo?.endsAt){el.textContent='Tanpa batas waktu';return;}
+  const remaining=Math.max(0,new Date(promo.endsAt).getTime()-now);
+  if(!Number.isFinite(remaining)){el.textContent='Waktu promo tidak valid';return;}
+  if(remaining<=0){el.textContent='⏰ Promo berakhir';return;}
+  const total=Math.floor(remaining/1000);
+  const days=Math.floor(total/86400),hours=Math.floor(total%86400/3600),minutes=Math.floor(total%3600/60),seconds=total%60;
+  el.textContent='⏳ Berakhir dalam '+(days?days+'h ':'')+(hours?hours+'j ':'')+String(minutes).padStart(2,'0')+'m '+String(seconds).padStart(2,'0')+'d';
+ });
+}
+
+function renderTimedPromoList(){const box=$('timedPromoList');if(!box)return;const promos=getTimedPromos();const rows=Object.entries(promos).filter(([key,v])=>v&&v.price).map(([key,v])=>{const [gk,pn]=key.split('::');const g=products.find(x=>x.key===gk);const active=isTimedPromoAvailable(v);const quotaText=Number(v.quota)>0?` · Kuota ${Math.max(0,Number(v.quota)-Number(v.used||0))}/${Number(v.quota)} tersisa`:' · Tanpa batas kuota';return `<div class="package" style="margin-top:8px"><div><strong>${esc(g?.name||gk)} — ${esc(pn)}</strong><small>${rupiah(v.price)} · ${active?'Aktif':'Tidak aktif / kuota habis'}${quotaText}${v.endsAt?' · sampai '+esc(new Date(v.endsAt).toLocaleString('id-ID')):''}</small></div><button class="btn secondary small" type="button" data-promo-edit="${esc(key)}">Pilih</button></div>`}).join('');box.innerHTML=rows||'<p class="note">Belum ada harga promo khusus.</p>';box.querySelectorAll('[data-promo-edit]').forEach(b=>b.onclick=()=>{const [gk,pn]=b.dataset.promoEdit.split('::');if($('timedPromoGame'))$('timedPromoGame').value=gk;updateTimedPromoPackages();if($('timedPromoPackage'))$('timedPromoPackage').value=pn;const p=getTimedPromos()[b.dataset.promoEdit];if(p){$('timedPromoPrice').value=p.price;$('timedPromoEnd').value=p.endsAt||'';if($('timedPromoQuota'))$('timedPromoQuota').value=p.quota||'';}});}
 function populateFeaturedSelectors(){
  const gs=$('featuredGame'); if(!gs)return;
  const previous=gs.value;
@@ -1452,13 +1542,14 @@ function updateFeaturedPackages(){
  packs.forEach(p=>ps.add(new Option(`${String(p[0])} — ${rupiah(p[1])}`,String(p[0]))));
  const current=getFeaturedMap()[`${g.key}::${ps.value}`]||'';if($('featuredBadge'))$('featuredBadge').value=current;
 }
-function renderVoucherAdmin(){const list=$('adminVoucherList');if(!list)return;const v=getVouchers();const entries=Object.entries(v);list.innerHTML=entries.length?entries.map(([code,item])=>`<div class="package" style="margin-top:8px"><div><strong>${esc(code)}</strong><small>${esc(item.label||'Voucher')} · ${Number(item.discount)||0}% · ${item.enabled===false?'Nonaktif':'Aktif'}</small></div><div style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn secondary small" data-voucher-toggle="${esc(code)}">${item.enabled===false?'Aktifkan':'Nonaktifkan'}</button><button type="button" class="btn danger small" data-voucher-delete="${esc(code)}">Hapus</button></div></div>`).join(''):'<p class="empty">Belum ada voucher.</p>';list.querySelectorAll('[data-voucher-toggle]').forEach(b=>b.onclick=()=>{const x=getVouchers();x[b.dataset.voucherToggle].enabled=x[b.dataset.voucherToggle].enabled===false;saveVouchers(x);renderVoucherAdmin();});list.querySelectorAll('[data-voucher-delete]').forEach(b=>b.onclick=()=>{const x=getVouchers();delete x[b.dataset.voucherDelete];saveVouchers(x);renderVoucherAdmin();});}
+function renderVoucherAdmin(){const list=$('adminVoucherList');if(!list)return;const v=getVouchers();const entries=Object.entries(v);list.innerHTML=entries.length?entries.map(([code,item])=>{const status=voucherAvailability(item),limit=Number(item.quota)||0,used=Number(item.used)||0;const quota=limit>0?` · Terpakai ${used}/${limit}`:' · Tanpa batas pengguna';const end=item.endsAt?` · Berakhir ${new Date(item.endsAt).toLocaleString('id-ID')}`:' · Tanpa batas waktu';const amount=Number(item.amount)>0?' · Nominal '+rupiah(item.amount):' · Nominal mengikuti persen';return `<div class="package" style="margin-top:8px"><div><strong>${esc(code)}</strong><small>${esc(item.label||'Voucher')} · ${Number(item.discount)||0}%${amount} · ${item.enabled===false?'Nonaktif':status.ok?'Aktif':'Habis / kedaluwarsa'}${quota}${end}</small></div><div style="display:flex;gap:6px;flex-wrap:wrap"><button type="button" class="btn secondary small" data-voucher-toggle="${esc(code)}">${item.enabled===false?'Aktifkan':'Nonaktifkan'}</button><button type="button" class="btn danger small" data-voucher-delete="${esc(code)}">Hapus</button></div></div>`}).join(''):'<p class="empty">Belum ada voucher.</p>';list.querySelectorAll('[data-voucher-toggle]').forEach(b=>b.onclick=()=>{const x=getVouchers();x[b.dataset.voucherToggle].enabled=x[b.dataset.voucherToggle].enabled===false;saveVouchers(x);renderVoucherAdmin();});list.querySelectorAll('[data-voucher-delete]').forEach(b=>b.onclick=()=>{const x=getVouchers();delete x[b.dataset.voucherDelete];saveVouchers(x);renderVoucherAdmin();});}
 function fillShopAppearance(){const c=readShopAppearance();if($('shopAccentColor'))$('shopAccentColor').value=c.color;if($('shopWelcomeText'))$('shopWelcomeText').value=c.welcome||'';}
 const SHOP_APPEARANCE_KEY='ka_shop_appearance_v1';
 function readShopAppearance(){try{return JSON.parse(localStorage.getItem(SHOP_APPEARANCE_KEY)||'{"color":"purple","welcome":""}')}catch{return {color:'purple',welcome:''}}}
 function applyShopAppearance(){const c=readShopAppearance();const colors={purple:['#2563eb','#1d4ed8'],pink:['#ec4899','#be185d'],blue:['#38bdf8','#2563eb'],green:['#34d399','#059669']};const pair=colors[c.color]||colors.purple;document.documentElement.style.setProperty('--purple',pair[0]);document.documentElement.style.setProperty('--purple2',pair[1]);const heroP=document.querySelector('.hero-grid > div > p');if(heroP){heroP.dataset.defaultText=heroP.dataset.defaultText||heroP.textContent;heroP.textContent=c.welcome||heroP.dataset.defaultText;}}
+function setupHelpToggle(){const box=$('helpContent'),btn=$('toggleHelpContent');if(!box||!btn)return;const setOpen=(open)=>{box.hidden=!open;btn.setAttribute('aria-expanded',String(open));btn.textContent=open?'－ Tutup Bantuan':'＋ Buka Bantuan';};btn.addEventListener('click',()=>setOpen(box.hidden));document.querySelectorAll('a[href="#help"]').forEach(link=>link.addEventListener('click',()=>setOpen(true)));setOpen(false);}
 function setupHelpSearch(){const input=$('helpSearch');if(!input)return;input.addEventListener('input',()=>{const q=input.value.trim().toLowerCase();let count=0;document.querySelectorAll('.faq-item').forEach(item=>{const match=!q||item.textContent.toLowerCase().includes(q);item.hidden=!match;if(match)count++;if(q&&match)item.open=true;});document.querySelectorAll('.help-card').forEach(card=>{card.hidden=!!q&&!card.textContent.toLowerCase().includes(q)});$('helpSearchStatus').textContent=q?`${count} FAQ cocok dengan “${input.value.trim()}”.`:'Ketik kata kunci untuk menyaring FAQ.';});}
-$('adminVoucherSave')?.addEventListener('click',()=>{const code=String($('adminVoucherCode').value||'').trim().toUpperCase().replace(/[^A-Z0-9_-]/g,'');const discount=Number($('adminVoucherDiscount').value);const label=String($('adminVoucherLabel').value||'Voucher KuyyinAjah').trim();if(code.length<3){$('adminVoucherMessage').textContent='Kode minimal 3 karakter.';return}if(!Number.isFinite(discount)||discount<1||discount>90){$('adminVoucherMessage').textContent='Diskon harus 1–90%.';return}const v=getVouchers();v[code]={discount,label,enabled:true};if(!saveVouchers(v)){$('adminVoucherMessage').textContent='Penyimpanan browser penuh.';return}$('adminVoucherMessage').textContent=`Voucher ${code} tersimpan.`;$('adminVoucherCode').value='';renderVoucherAdmin();});
+$('adminVoucherSave')?.addEventListener('click',()=>{const code=String($('adminVoucherCode').value||'').trim().toUpperCase().replace(/[^A-Z0-9_-]/g,'');const discount=Number($('adminVoucherDiscount').value);const amountRaw=$('adminVoucherAmount')?.value.trim()||'',amount=amountRaw?Number(amountRaw):0;const label=String($('adminVoucherLabel').value||'Voucher KuyyinAjah').trim();const quotaRaw=$('adminVoucherQuota')?.value.trim()||'',quota=quotaRaw?Number(quotaRaw):0,endsAt=$('adminVoucherEnd')?.value||'';if(code.length<3){$('adminVoucherMessage').textContent='Kode minimal 3 karakter.';return}if(!Number.isFinite(discount)||discount<1||discount>90){$('adminVoucherMessage').textContent='Diskon harus 1–90%.';return}if(amountRaw&&(!Number.isFinite(amount)||!Number.isInteger(amount)||amount<1)){$('adminVoucherMessage').textContent='Nominal diskon harus angka bulat lebih dari 0.';return}if(quotaRaw&&(!Number.isInteger(quota)||quota<1)){$('adminVoucherMessage').textContent='Batas pengguna harus angka bulat minimal 1.';return}if(endsAt&&new Date(endsAt).getTime()<=Date.now()){$('adminVoucherMessage').textContent='Tanggal dan jam berakhir harus di masa depan.';return}const v=getVouchers(),old=v[code];v[code]={discount,amount,label,enabled:true,quota,used:old?.used||0,endsAt};if(!saveVouchers(v)){$('adminVoucherMessage').textContent='Penyimpanan browser penuh.';return}$('adminVoucherMessage').textContent=`Voucher ${code} tersimpan: ${discount}%${amount>0?' dan nominal potongan '+rupiah(amount):' (nominal mengikuti persentase)'}; batas ${quota>0?quota+' pengguna':'tanpa batas'}${endsAt?' sampai '+new Date(endsAt).toLocaleString('id-ID'):''}.`;$('adminVoucherCode').value='';if($('adminVoucherAmount'))$('adminVoucherAmount').value='';renderVoucherAdmin();});
 $('adminVoucherReset')?.addEventListener('click',()=>{saveVouchers({...DEFAULT_VOUCHERS});renderVoucherAdmin();$('adminVoucherMessage').textContent='Voucher demo dipulihkan.';});
 $('featuredGame')?.addEventListener('change',updateFeaturedPackages);
 $('featuredGame')?.addEventListener('focus',populateFeaturedSelectors);
@@ -1466,8 +1557,8 @@ $('featuredPackage')?.addEventListener('focus',updateFeaturedPackages);
 $('featuredPackage')?.addEventListener('change',()=>{const g=products.find(x=>x.key===$('featuredGame').value);if($('featuredBadge'))$('featuredBadge').value=getFeaturedMap()[`${g?.key}::${$('featuredPackage').value}`]||'';});
 $('featuredSave')?.addEventListener('click',()=>{const g=products.find(x=>String(x.key)===$('featuredGame').value),p=$('featuredPackage').value;if(!g||!p){$('featuredMessage').textContent='Pilih game dan paket yang tersedia terlebih dahulu.';return;}const m=getFeaturedMap(),key=`${g.key}::${p}`,badge=$('featuredBadge').value;if(badge)m[key]=badge;else delete m[key];localStorage.setItem('ka_featured_packages_v1',JSON.stringify(m));$('featuredMessage').textContent='Label paket disimpan.';renderGames();});
 $('timedPromoGame')?.addEventListener('change',updateTimedPromoPackages);
-$('timedPromoPackage')?.addEventListener('change',updateTimedPromoPackages);
-$('timedPromoSave')?.addEventListener('click',()=>{const g=products.find(x=>x.key===$('timedPromoGame').value),pn=$('timedPromoPackage').value,pack=g?.packages.find(x=>x[0]===pn),price=Number($('timedPromoPrice').value),ends=$('timedPromoEnd').value;if(!g||!pack){$('timedPromoMessage').textContent='Pilih game dan paket terlebih dahulu.';return}if(!Number.isFinite(price)||price<1||price>=Number(pack[1])){$('timedPromoMessage').textContent='Harga promo harus lebih besar dari Rp0 dan lebih rendah dari harga normal ('+rupiah(pack[1])+').';return}if(ends&&new Date(ends).getTime()<=Date.now()){$('timedPromoMessage').textContent='Waktu berakhir harus di masa depan.';return}const m=getTimedPromos();m[promoKey(g.key,pn)]={price:Math.round(price),endsAt:ends};try{localStorage.setItem(TIMED_PROMOS_KEY,JSON.stringify(m));$('timedPromoMessage').textContent='Harga promo tersimpan. Katalog akan menampilkan harga promo selama periode aktif.';renderTimedPromoList();renderGames();showToast('Harga promo disimpan.')}catch{$('timedPromoMessage').textContent='Gagal menyimpan promo di browser.'}});
+$('timedPromoPackage')?.addEventListener('change',updateTimedPromoFields);
+$('timedPromoSave')?.addEventListener('click',()=>{const g=products.find(x=>x.key===$('timedPromoGame').value),pn=$('timedPromoPackage').value,pack=g?.packages.find(x=>x[0]===pn),price=Number($('timedPromoPrice').value),ends=$('timedPromoEnd').value,quotaRaw=$('timedPromoQuota')?.value.trim()||'',quota=quotaRaw?Number(quotaRaw):0;if(!g||!pack){$('timedPromoMessage').textContent='Pilih game dan paket terlebih dahulu.';return}if(!Number.isFinite(price)||price<1||price>=Number(pack[1])){$('timedPromoMessage').textContent='Harga promo harus lebih besar dari Rp0 dan lebih rendah dari harga normal ('+rupiah(pack[1])+').';return}if(ends&&new Date(ends).getTime()<=Date.now()){$('timedPromoMessage').textContent='Waktu berakhir harus di masa depan.';return}if(quotaRaw&&(!Number.isInteger(quota)||quota<1)){$('timedPromoMessage').textContent='Kuota harus berupa angka bulat minimal 1.';return}const m=getTimedPromos(),oldPromo=m[promoKey(g.key,pn)];m[promoKey(g.key,pn)]={price:Math.round(price),endsAt:ends,quota,used:oldPromo?.used||0};try{localStorage.setItem(TIMED_PROMOS_KEY,JSON.stringify(m));$('timedPromoMessage').textContent='Harga promo tersimpan. Kuota dihitung lokal saat pesanan dibuat; setelah habis, harga normal digunakan di browser ini.';renderTimedPromoList();renderGames();renderActivePromoBanner();showToast('Harga promo disimpan.')}catch{$('timedPromoMessage').textContent='Gagal menyimpan promo di browser.'}});
 $('timedPromoRemove')?.addEventListener('click',()=>{const g=products.find(x=>x.key===$('timedPromoGame').value),pn=$('timedPromoPackage').value;if(!g||!pn)return;const m=getTimedPromos();delete m[promoKey(g.key,pn)];localStorage.setItem(TIMED_PROMOS_KEY,JSON.stringify(m));$('timedPromoMessage').textContent='Promo paket dihapus; harga normal digunakan.';renderTimedPromoList();renderGames();updateTimedPromoPackages();});
 $('shopAppearanceSave')?.addEventListener('click',()=>{const c=$('shopAccentColor').value,welcome=$('shopWelcomeText').value.trim();localStorage.setItem(SHOP_APPEARANCE_KEY,JSON.stringify({color:c,welcome}));applyShopAppearance();$('shopAppearanceMessage').textContent='Tampilan diterapkan di browser ini.';});
 $('shopAppearanceReset')?.addEventListener('click',()=>{localStorage.removeItem(SHOP_APPEARANCE_KEY);fillShopAppearance();applyShopAppearance();$('shopAppearanceMessage').textContent='Tampilan default dipulihkan.';});
@@ -1505,25 +1596,84 @@ $id('saveOrderInternalNote')?.addEventListener('click',()=>{const no=$id('orderI
 // Add checkboxes to the order cards rendered by the existing dashboard.
 function addOrderSelection(){document.querySelectorAll('#adminOrdersList .order').forEach(card=>{if(card.querySelector('[data-order-select]'))return;const text=card.querySelector('strong')?.textContent?.trim();let idx=-1;try{idx=orders.findIndex(o=>String(o.no)===text)}catch{}if(idx<0)return;const label=document.createElement('label');label.style.cssText='display:flex;gap:8px;align-items:center;margin:8px 0';label.innerHTML='<input type="checkbox" data-order-select="'+idx+'"> Pilih untuk aksi massal';card.prepend(label);const note=read('ka_order_internal_notes_v1',{})[text];if(note){const p=document.createElement('p');p.className='note';p.textContent='🗒️ Catatan internal: '+note;card.append(p);}})}
 const orderBox=$id('adminOrdersList');if(orderBox&&window.MutationObserver)new MutationObserver(addOrderSelection).observe(orderBox,{childList:true,subtree:true});
-function fillFlashGames(){const el=$id('flashSaleGame');if(!el)return;const old=el.value;let gs=[];try{gs=typeof products!=='undefined'?products:[]}catch{}el.innerHTML='';gs.forEach(g=>el.add(new Option(g.name,g.key)));if(gs.some(g=>g.key===old))el.value=old;renderFlashList();}
-function renderFlashList(){const box=$id('flashSaleList');if(!box)return;const m=read('ka_flash_sale_schedules_v1',{});box.innerHTML=Object.entries(m).map(([k,v])=>'<div class="package" style="margin-top:8px"><div><strong>'+safe(v.name)+' — '+v.discount+'% OFF</strong><small>'+new Date(v.start).toLocaleString('id-ID')+' sampai '+new Date(v.end).toLocaleString('id-ID')+'</small></div><button class="btn secondary small" type="button" data-flash-remove="'+k+'">Hapus</button></div>').join('')||'<p class="note">Belum ada flash sale terjadwal.</p>';box.querySelectorAll('[data-flash-remove]').forEach(b=>b.onclick=()=>{const m=read('ka_flash_sale_schedules_v1',{});delete m[b.dataset.flashRemove];write('ka_flash_sale_schedules_v1',m);syncFlashPrices();renderFlashList();});}
-function syncFlashPrices(){let gs=[];try{gs=typeof products!=='undefined'?products:[]}catch{}const schedules=read('ka_flash_sale_schedules_v1',{});let promos={};try{promos=typeof getTimedPromos==='function'?getTimedPromos():{}}catch{}let changed=false;Object.entries(schedules).forEach(([key,v])=>{const g=gs.find(x=>x.key===key);if(!g)return;(g.packages||[]).forEach(p=>{const pk=key+'::'+p[0];if(Date.now()>=new Date(v.start).getTime()&&Date.now()<new Date(v.end).getTime()){const price=Math.max(1,Math.floor(Number(p[1])*(1-Number(v.discount)/100)));promos[pk]={price,startsAt:v.start,endsAt:v.end,flashSale:true};changed=true}else if(promos[pk]?.flashSale){delete promos[pk];changed=true}})});if(changed){write('ka_timed_package_promos_v1',promos);try{if(typeof renderGames==='function')renderGames();if(typeof renderTimedPromoList==='function')renderTimedPromoList()}catch{}}}
-$id('saveFlashSale')?.addEventListener('click',()=>{const key=$id('flashSaleGame').value,disc=Number($id('flashSaleDiscount').value),start=$id('flashSaleStart').value,end=$id('flashSaleEnd').value;let gs=[];try{gs=typeof products!=='undefined'?products:[]}catch{}const g=gs.find(x=>x.key===key);if(!g){$id('flashSaleMessage').textContent='Pilih game terlebih dahulu.';return}if(!(disc>=1&&disc<=80)){$id('flashSaleMessage').textContent='Diskon harus 1–80%.';return}if(!start||!end||new Date(start).getTime()<=Date.now()||new Date(end).getTime()<=new Date(start).getTime()){$id('flashSaleMessage').textContent='Pilih waktu mulai di masa depan dan waktu akhir setelah waktu mulai.';return}const m=read('ka_flash_sale_schedules_v1',{});m[key]={name:g.name,discount:disc,start:new Date(start).toISOString(),end:new Date(end).toISOString()};if(write('ka_flash_sale_schedules_v1',m)){$id('flashSaleMessage').textContent='Flash sale dijadwalkan. Harga akan berubah otomatis saat waktu mulai tiba.';renderFlashList();}else $id('flashSaleMessage').textContent='Gagal menyimpan jadwal.';});
-$id('clearFlashSale')?.addEventListener('click',()=>{const key=$id('flashSaleGame').value;const m=read('ka_flash_sale_schedules_v1',{});delete m[key];write('ka_flash_sale_schedules_v1',m);syncFlashPrices();renderFlashList();$id('flashSaleMessage').textContent='Jadwal game terpilih dihapus.';});
+function fillFlashGames(){
+ const el=$id('flashSaleGame');if(!el)return;const old=el.value;let gs=[];
+ try{gs=typeof products!=='undefined'?products:[]}catch{}
+ el.innerHTML='';gs.forEach(g=>el.add(new Option(g.name,g.key)));
+ if(gs.some(g=>g.key===old))el.value=old;
+ renderFlashPackageOptions();renderFlashList();
+}
+function renderFlashPackageOptions(){
+ const box=$id('flashSalePackages');if(!box)return;
+ const gameKey=$id('flashSaleGame')?.value;
+ const game=(typeof products!=='undefined'?products:[]).find(g=>g.key===gameKey);
+ if(!game){box.innerHTML='<p class="note">Pilih game terlebih dahulu.</p>';return;}
+ const schedules=read('ka_flash_sale_schedules_v1',{}),saved=schedules[gameKey];
+ const selected=Array.isArray(saved?.packages)?saved.packages:(game.packages||[]).map(p=>p[0]);
+ const savedPrices=saved?.prices||{};
+ const discount=Math.max(1,Math.min(99,Number(saved?.discount??$id('flashSaleDiscount')?.value??10)||10));
+ if($id('flashSaleDiscount'))$id('flashSaleDiscount').value=String(discount);
+ box.innerHTML=(game.packages||[]).map((p,i)=>{const suggested=Math.max(1,Math.floor(Number(p[1])*(1-discount/100)));const price=Number(savedPrices[p[0]]??suggested);return '<div class="flash-package-option"><label style="display:flex;gap:9px;align-items:center;flex:1;min-width:0"><input type="checkbox" data-flash-package="'+i+'" value="'+safe(p[0])+'"'+(selected.includes(p[0])?' checked':'')+'><span><b>'+safe(p[0])+'</b><small>Normal: '+rupiah(p[1])+'</small></span></label><label style="min-width:125px;flex:0 0 125px;cursor:text"><small>Harga Flash Sale (Rp)</small><input class="field" type="number" inputmode="numeric" min="1" max="'+(Number(p[1])-1)+'" step="1" data-flash-price="'+i+'" value="'+(Number.isFinite(price)?price:suggested)+'" placeholder="Isi harga" style="width:100%;cursor:text"></label></div>';}).join('')||'<p class="note">Game ini belum memiliki paket.</p>';
+}
+function updateFlashSuggestedPrices(){
+ const discount=Math.max(1,Math.min(99,Number($id('flashSaleDiscount')?.value)||10));
+ const game=(typeof products!=='undefined'?products:[]).find(g=>g.key===$id('flashSaleGame')?.value);if(!game)return;
+ $id('flashSalePackages')?.querySelectorAll('input[data-flash-price]').forEach(input=>{const i=Number(input.dataset.flashPrice),pkg=game.packages?.[i];if(pkg)input.value=Math.max(1,Math.floor(Number(pkg[1])*(1-discount/100)));});
+}
+$id('flashSaleDiscount')?.addEventListener('input',updateFlashSuggestedPrices);
+function getSelectedFlashPackages(){return [...($id('flashSalePackages')?.querySelectorAll('input[data-flash-package]:checked')||[])].map(el=>el.value);}
+$id('flashSaleGame')?.addEventListener('change',renderFlashPackageOptions);
+$id('flashSelectAllPackages')?.addEventListener('click',()=>$id('flashSalePackages')?.querySelectorAll('input[data-flash-package]').forEach(el=>el.checked=true));
+$id('flashClearPackages')?.addEventListener('click',()=>$id('flashSalePackages')?.querySelectorAll('input[data-flash-package]').forEach(el=>el.checked=false));
+function renderFlashList(){
+ const box=$id('flashSaleList');if(!box)return;const m=read('ka_flash_sale_schedules_v1',{});
+ box.innerHTML=Object.entries(m).map(([k,v])=>{const g=(typeof products!=='undefined'?products:[]).find(x=>x.key===k);const names=Array.isArray(v.packages)?v.packages:(g?.packages||[]).map(p=>p[0]);const priceInfo=names.map(n=>n+': '+(v.prices?.[n]?rupiah(v.prices[n]):(v.discount?String(v.discount)+'% diskon':'harga otomatis'))).join(' • ');return '<div class="package" style="margin-top:8px"><div><strong>'+safe(v.name)+' — '+(Number(v.discount)||0)+'% diskon</strong><small>Paket: '+safe(names.join(', ')||'Belum dipilih')+'</small><small>'+safe(priceInfo)+'</small><small>'+new Date(v.start).toLocaleString('id-ID')+' sampai '+new Date(v.end).toLocaleString('id-ID')+'</small></div><button class="btn secondary small" type="button" data-flash-remove="'+safe(k)+'">Hapus</button></div>';}).join('')||'<p class="note">Belum ada flash sale terjadwal.</p>';
+ box.querySelectorAll('[data-flash-remove]').forEach(b=>b.onclick=()=>{const schedules=read('ka_flash_sale_schedules_v1',{});delete schedules[b.dataset.flashRemove];write('ka_flash_sale_schedules_v1',schedules);syncFlashPrices();renderFlashList();renderFlashPackageOptions();});
+}
+function syncFlashPrices(){
+ let gs=[];try{gs=typeof products!=='undefined'?products:[]}catch{}
+ const schedules=read('ka_flash_sale_schedules_v1',{});let promos={};try{promos=typeof getTimedPromos==='function'?getTimedPromos():{}}catch{}
+ let changed=false;const now=Date.now();
+ gs.forEach(g=>{const schedule=schedules[g.key];const selected=Array.isArray(schedule?.packages)?schedule.packages:(g.packages||[]).map(p=>p[0]);
+  (g.packages||[]).forEach(p=>{const pk=g.key+'::'+p[0],isSelected=!!schedule&&selected.includes(p[0]);const start=schedule?new Date(schedule.start).getTime():NaN,end=schedule?new Date(schedule.end).getTime():NaN;
+   if(isSelected&&now>=start&&now<end){const customPrice=Number(schedule.prices?.[p[0]]);const price=Number.isFinite(customPrice)&&customPrice>0?Math.min(Number(p[1]),Math.floor(customPrice)):Math.max(1,Math.floor(Number(p[1])*(1-Number(schedule.discount||10)/100)));const next={price,startsAt:schedule.start,endsAt:schedule.end,flashSale:true};if(JSON.stringify(promos[pk])!==JSON.stringify(next)){promos[pk]=next;changed=true;}}
+   else if(promos[pk]?.flashSale){delete promos[pk];changed=true;}
+  });
+ });
+ if(changed){write('ka_timed_package_promos_v1',promos);try{if(typeof renderGames==='function')renderGames();if(typeof renderTimedPromoList==='function')renderTimedPromoList();if(typeof renderActivePromoBanner==='function')renderActivePromoBanner();}catch{}}
+}
+$id('saveFlashSale')?.addEventListener('click',()=>{
+ const key=$id('flashSaleGame').value,start=$id('flashSaleStart').value,end=$id('flashSaleEnd').value,packages=getSelectedFlashPackages();
+ const discount=Number($id('flashSaleDiscount')?.value||10);
+ let gs=[];try{gs=typeof products!=='undefined'?products:[]}catch{}const g=gs.find(x=>x.key===key);
+ if(!g){$id('flashSaleMessage').textContent='Pilih game terlebih dahulu.';return;}
+ if(!Number.isInteger(discount)||discount<1||discount>99){$id('flashSaleMessage').textContent='Isi diskon antara 1 sampai 99 persen.';return;}
+ if(!packages.length){$id('flashSaleMessage').textContent='Pilih minimal satu paket untuk Flash Sale.';return;}
+ const prices={};for(const name of packages){const checkbox=[...($id('flashSalePackages')?.querySelectorAll('input[data-flash-package]')||[])].find(x=>x.value===name);const idx=Number(checkbox?.dataset.flashPackage);const input=$id('flashSalePackages')?.querySelector('input[data-flash-price="'+idx+'"]');const normal=Number((g.packages||[]).find(p=>p[0]===name)?.[1]);const raw=String(input?.value??'').trim();const price=raw===''?Math.floor(normal*(1-discount/100)):Number(raw);if(!Number.isFinite(price)||price<1||price>=normal){$id('flashSaleMessage').textContent='Harga Flash Sale untuk '+name+' harus diisi dan lebih rendah dari harga normal.';input?.focus();return;}prices[name]=Math.floor(price);}
+ if(!start||!end||new Date(start).getTime()<=Date.now()||new Date(end).getTime()<=new Date(start).getTime()){$id('flashSaleMessage').textContent='Pilih waktu mulai di masa depan dan waktu akhir setelah waktu mulai.';return;}
+ const m=read('ka_flash_sale_schedules_v1',{});m[key]={name:g.name,packages,prices,discount,start:new Date(start).toISOString(),end:new Date(end).toISOString()};
+ if(write('ka_flash_sale_schedules_v1',m)){$id('flashSaleMessage').textContent='Flash Sale berhasil dijadwalkan untuk '+packages.length+' paket terpilih dengan diskon '+discount+'%.';syncFlashPrices();renderFlashList();renderFlashPackageOptions();}
+ else $id('flashSaleMessage').textContent='Gagal menyimpan jadwal.';
+});
+$id('clearFlashSale')?.addEventListener('click',()=>{const key=$id('flashSaleGame').value,m=read('ka_flash_sale_schedules_v1',{});delete m[key];write('ka_flash_sale_schedules_v1',m);syncFlashPrices();renderFlashList();renderFlashPackageOptions();$id('flashSaleMessage').textContent='Jadwal game terpilih dihapus.';});
 
 const STOCK_KEY='ka_package_stock_v1', SERVICE_KEY='ka_service_status_v1';
 function readStock(){return read(STOCK_KEY,{});} function readService(){return read(SERVICE_KEY,{});}
 function stockKey(gameKey,packageName){return gameKey+'::'+packageName;}
-function serviceStatus(gameKey){return readService()[gameKey]||'available';}
+function packageServiceStatus(gameKey,packageName){const statuses=readService();return statuses[stockKey(gameKey,packageName)]||statuses[gameKey]||'available';}
 function packageStock(gameKey,packageName){const x=readStock()[stockKey(gameKey,packageName)];return x===undefined||x===null||x===''?null:Math.max(0,Number(x)||0);}
 function fillStockGameSelect(){const el=$id('stockGameSelect');if(!el)return;const old=el.value;let gs=[];try{gs=products||[]}catch{}el.innerHTML='';gs.forEach(g=>el.add(new Option(g.name,g.key)));if(gs.some(g=>g.key===old))el.value=old;fillStockPackages();renderStockServiceList();}
-function fillStockPackages(){const game=$id('stockGameSelect')?.value;const el=$id('stockPackageSelect');if(!el)return;const g=(typeof products!=='undefined'?products:[]).find(x=>x.key===game);const old=el.value;el.innerHTML='';(g?.packages||[]).forEach(p=>el.add(new Option(p[0],p[0])));if((g?.packages||[]).some(p=>p[0]===old))el.value=old;const st=readService();if($id('serviceStatusSelect'))$id('serviceStatusSelect').value=st[game]||'available';const q=packageStock(game,el.value);if($id('stockQuantity'))$id('stockQuantity').value=q===null?'':q;}
-function renderStockServiceList(){const box=$id('stockServiceList');if(!box)return;let gs=[];try{gs=products||[]}catch{}const statuses=readService(),stocks=readStock();box.innerHTML=gs.map(g=>{const st=statuses[g.key]||'available',label=st==='available'?'🟢 Tersedia':st==='maintenance'?'🟠 Pemeliharaan':'🔴 Gangguan';return '<div class="package" style="margin-top:8px"><div><strong>'+safe(g.name)+' — '+label+'</strong><small>'+(g.packages||[]).map(p=>{const n=stocks[stockKey(g.key,p[0])];return safe(p[0])+': '+(n===undefined?'Tidak terbatas':Number(n)===0?'Habis':safe(n)+' stok')}).join(' · ')+'</small></div></div>'}).join('')||'<p class="note">Belum ada game di katalog.</p>';}
-$id('stockGameSelect')?.addEventListener('change',fillStockPackages);$id('stockPackageSelect')?.addEventListener('change',()=>{const q=packageStock($id('stockGameSelect').value,$id('stockPackageSelect').value);$id('stockQuantity').value=q===null?'':q;});
-$id('saveStockService')?.addEventListener('click',()=>{const game=$id('stockGameSelect').value,pkg=$id('stockPackageSelect').value,status=$id('serviceStatusSelect').value,raw=$id('stockQuantity').value.trim();let gs=[];try{gs=products||[]}catch{}const g=gs.find(x=>x.key===game);if(!g){$id('stockServiceMessage').textContent='Pilih game terlebih dahulu.';return}const statuses=readService();statuses[game]=status;if(!write(SERVICE_KEY,statuses)){$id('stockServiceMessage').textContent='Gagal menyimpan status layanan.';return}const stocks=readStock();if(pkg){if(raw===''||!Number.isFinite(Number(raw))||Number(raw)<0||!Number.isInteger(Number(raw))){delete stocks[stockKey(game,pkg)];}else stocks[stockKey(game,pkg)]=Number(raw);if(!write(STOCK_KEY,stocks)){$id('stockServiceMessage').textContent='Status tersimpan, tetapi stok gagal disimpan.';return}}$id('stockServiceMessage').textContent='Status layanan dan stok berhasil disimpan.';renderStockServiceList();try{renderGames()}catch{}});
-$id('unlimitedStock')?.addEventListener('click',()=>{const game=$id('stockGameSelect').value,pkg=$id('stockPackageSelect').value;const stocks=readStock();delete stocks[stockKey(game,pkg)];write(STOCK_KEY,stocks);$id('stockQuantity').value='';renderStockServiceList();try{renderGames()}catch{}$id('stockServiceMessage').textContent='Paket diatur tanpa batas stok.';});
+function fillStockPackages(){const game=$id('stockGameSelect')?.value;const el=$id('stockPackageSelect');if(!el)return;const g=(typeof products!=='undefined'?products:[]).find(x=>x.key===game);const old=el.value;el.innerHTML='';(g?.packages||[]).forEach(p=>el.add(new Option(p[0],p[0])));if((g?.packages||[]).some(p=>p[0]===old))el.value=old;const pkg=el.value;if($id('serviceStatusSelect'))$id('serviceStatusSelect').value=pkg?packageServiceStatus(game,pkg):'available';const q=packageStock(game,pkg);if($id('stockQuantity'))$id('stockQuantity').value=q===null?'':q;}
+function renderStockServiceList(){const box=$id('stockServiceList');if(!box)return;let gs=[];try{gs=products||[]}catch{}const statuses=readService(),stocks=readStock();const labelOf=st=>st==='available'?'🟢 Tersedia':st==='maintenance'?'🟠 Pemeliharaan':'🔴 Gangguan';box.innerHTML=gs.map(g=>'<div class="package" style="margin-top:8px;display:block"><strong>'+safe(g.name)+'</strong><div class="package-list">'+(g.packages||[]).map(p=>{const key=stockKey(g.key,p[0]),st=statuses[key]||statuses[g.key]||'available',n=stocks[key];return '<div class="package"><div><strong>'+safe(p[0])+' — '+labelOf(st)+'</strong><small>'+(n===undefined?'Tidak terbatas':Number(n)===0?'Habis':safe(n)+' stok')+'</small></div></div>'}).join('')+'</div></div>').join('')||'<p class="note">Belum ada game di katalog.</p>';}
+$id('stockGameSelect')?.addEventListener('change',fillStockPackages);
+$id('stockPackageSelect')?.addEventListener('change',()=>{const game=$id('stockGameSelect').value,pkg=$id('stockPackageSelect').value,q=packageStock(game,pkg);$id('stockQuantity').value=q===null?'':q;$id('serviceStatusSelect').value=pkg?packageServiceStatus(game,pkg):'available';});
+$id('saveStockService')?.addEventListener('click',()=>{const game=$id('stockGameSelect').value,pkg=$id('stockPackageSelect').value,status=$id('serviceStatusSelect').value,raw=$id('stockQuantity').value.trim();let gs=[];try{gs=products||[]}catch{}const g=gs.find(x=>x.key===game);if(!g){$id('stockServiceMessage').textContent='Pilih game terlebih dahulu.';return}if(!pkg){$id('stockServiceMessage').textContent='Pilih paket terlebih dahulu.';return}if(!(g.packages||[]).some(p=>p[0]===pkg)){$id('stockServiceMessage').textContent='Paket tidak ditemukan. Pilih ulang paket.';return}
+ const statuses=readService();const legacy=statuses[game];if(legacy){(g.packages||[]).forEach(p=>{const k=stockKey(game,p[0]);if(statuses[k]===undefined)statuses[k]=legacy;});delete statuses[game];}statuses[stockKey(game,pkg)]=status;if(!write(SERVICE_KEY,statuses)){$id('stockServiceMessage').textContent='Gagal menyimpan status layanan di penyimpanan browser.';return}
+ const stocks=readStock();if(raw===''||!Number.isFinite(Number(raw))||Number(raw)<0||!Number.isInteger(Number(raw))){delete stocks[stockKey(game,pkg)];}else stocks[stockKey(game,pkg)]=Number(raw);if(!write(STOCK_KEY,stocks)){$id('stockServiceMessage').textContent='Status tersimpan, tetapi stok gagal disimpan.';return}
+ $id('stockServiceMessage').textContent='Berhasil! Status dan stok '+pkg+' disimpan terpisah.';renderStockServiceList();try{renderGames()}catch{} });
+$id('unlimitedStock')?.addEventListener('click',()=>{const game=$id('stockGameSelect').value,pkg=$id('stockPackageSelect').value;if(!game||!pkg){$id('stockServiceMessage').textContent='Pilih game dan paket terlebih dahulu.';return}const stocks=readStock();delete stocks[stockKey(game,pkg)];if(!write(STOCK_KEY,stocks)){$id('stockServiceMessage').textContent='Gagal menyimpan perubahan stok.';return}$id('stockQuantity').value='';renderStockServiceList();try{renderGames()}catch{}$id('stockServiceMessage').textContent='Stok '+pkg+' diatur tanpa batas.';});
 
-document.addEventListener('DOMContentLoaded',()=>{fillHome();applyHome();fillFlashGames();syncFlashPrices();fillStockGameSelect();});setTimeout(()=>{fillHome();applyHome();fillFlashGames();syncFlashPrices();},350);setInterval(syncFlashPrices,15000);
+document.addEventListener('DOMContentLoaded',()=>{fillHome();applyHome();fillFlashGames();syncFlashPrices();fillStockGameSelect();renderActivePromoBanner();});setTimeout(()=>{fillHome();applyHome();fillFlashGames();syncFlashPrices();},350);setInterval(()=>{syncFlashPrices();renderActivePromoBanner();},15000);
 })();
 </script>
 
@@ -1605,6 +1755,9 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeProductDetails(
  window.addEventListener('pageshow',releaseScrollLock);
  window.addEventListener('focus',releaseScrollLock);
 })();
+
+setInterval(updateTimedPromoCountdowns,1000);
+updateTimedPromoCountdowns();
 </script>
 
 </body>
